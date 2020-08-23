@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import { Form } from '@unform/mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
@@ -36,9 +37,9 @@ export const CreateAccount = styled.TouchableOpacity`
   border-color: #aaa;
   padding: 16px 0 ${16 + getBottomSpace() / 2}px;
 
-  flex-direction: row;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
 `;
 
 export const CreateAccountText = styled.Text`
@@ -46,4 +47,8 @@ export const CreateAccountText = styled.Text`
   font-size: 18px;
   font-family: 'RobotoSlab-Regular';
   margin-left: 15px;
+`;
+
+export const FormContainer = styled(Form)`
+  width: 100%;
 `;
