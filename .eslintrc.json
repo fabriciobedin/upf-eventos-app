@@ -1,7 +1,4 @@
 {
-  "env": {
-    "es2020": true
-  },
   "globals": {
     "__DEV__": "readonly"
   },
@@ -18,7 +15,8 @@
       "jsx": true
     },
     "ecmaVersion": 11,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier"],
   "settings": {
