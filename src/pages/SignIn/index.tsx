@@ -1,9 +1,16 @@
 import React from 'react';
+import { Image } from 'react-native';
 
 import { Container } from './styles';
 
+import logo from '../../assets/logo_upf.png';
+
 const SignIn: React.FC = () => {
-  return <Container />;
+  return (
+    <Container>
+      <Image source={logo} />
+    </Container>
+  );
 };
 
 export default SignIn;
