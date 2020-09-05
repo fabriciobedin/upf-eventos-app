@@ -19,6 +19,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: object;
+  loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -27,24 +28,25 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [auth, setAuth] = useState<AuthState>({} as AuthState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStoragedData(): Promise<void> {
       const user = await AsyncStorage.getItem('@upf-eventos:user');
-      const token = await AsyncStorage.getItem('@upf-eventos:token');
+      // const token = await AsyncStorage.getItem('@upf-eventos:token');
       // const [user[1], token[1]] = await AsyncStorage.multiGet([
       //   '@upf-eventos:user',
       //   '@upf-eventos:token'
       // ]);
-      if (user && token) {
-        setAuth({ user: JSON.parse(user), token: token });
+      if (user) {
+        setAuth({ user: JSON.parse(user), token: 'token' });
       }
+      setLoading(false);
     }
     loadStoragedData();
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
-    // TODO get auth from firebase
     await AsyncStorage.setItem('@upf-eventos:user', JSON.stringify(email));
     setAuth({ user: email, token: password });
   }, []);
@@ -56,7 +58,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: auth, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: auth, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
