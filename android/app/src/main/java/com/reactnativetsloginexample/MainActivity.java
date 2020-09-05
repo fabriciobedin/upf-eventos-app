@@ -1,4 +1,4 @@
-package com.reactnativetsloginexample;
+package app.web.upfeventosapp;
 
 import com.facebook.react.ReactActivity;
 
