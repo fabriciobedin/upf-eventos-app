@@ -59,6 +59,8 @@ const SignUp: React.FC = () => {
       //   password: data.password
       // });
 
+      navigation.navigate('signin');
+
       // history.push('/');
       // addToast({
       //   type: 'success',

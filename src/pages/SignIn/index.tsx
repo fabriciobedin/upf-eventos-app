@@ -27,46 +27,52 @@ import {
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 
+import { useAuth } from '../../hooks/auth';
+
 interface SignInFormData {
   email: string;
   password: string;
 }
 
 const SignIn: React.FC = () => {
+  const { signIn } = useAuth();
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const handleSignIn = useCallback(async (data: SignInFormData) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required('Email obrigatório!')
-          .email('Digite um email válido!'),
-        password: Yup.string().required('Senha obrigatória!')
-      });
-      await schema.validate(data, {
-        abortEarly: false
-      });
+  const handleSignIn = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required('Email obrigatório!')
+            .email('Digite um email válido!'),
+          password: Yup.string().required('Senha obrigatória!')
+        });
+        await schema.validate(data, {
+          abortEarly: false
+        });
 
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password
-      // });
-      // history.push('dashboard')
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        formRef.current?.setErrors(getValidationErrors(err));
-        return;
+        await signIn({
+          email: data.email,
+          password: data.password
+        });
+        // history.push('dashboard')
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          formRef.current?.setErrors(getValidationErrors(err));
+          return;
+        }
+
+        Alert.alert(
+          'Erro na autenticação',
+          'Por favor, verifique se digitou suas credenciais corretamente.'
+        );
       }
-
-      Alert.alert(
-        'Erro na autenticação',
-        'Por favor, verifique se digitou suas credenciais corretamente.'
-      );
-    }
-  }, []);
+    },
+    [signIn]
+  );
 
   return (
     <>
