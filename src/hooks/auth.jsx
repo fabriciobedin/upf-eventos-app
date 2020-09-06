@@ -7,31 +7,14 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-interface AuthState {
-  token: string;
-  user: object;
-}
+const AuthContext = createContext({});
 
-interface SignInCredentials {
-  email: string;
-  password: string;
-}
-
-interface AuthContextData {
-  user: object;
-  loading: boolean;
-  signIn(credentials: SignInCredentials): Promise<void>;
-  signOut(): void;
-}
-
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
-
-const AuthProvider: React.FC = ({ children }) => {
-  const [auth, setAuth] = useState<AuthState>({} as AuthState);
+const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadStoragedData(): Promise<void> {
+    async function loadStoragedData() {
       const user = await AsyncStorage.getItem('@upf-eventos:user');
       // const token = await AsyncStorage.getItem('@upf-eventos:token');
       // const [user[1], token[1]] = await AsyncStorage.multiGet([
@@ -54,7 +37,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(async () => {
     await AsyncStorage.removeItem('@upf-eventos:user');
     // await AsyncStorage.multiRemove(['@upf-eventos:user', '@upf-eventos:someotherkey']);
-    setAuth({} as AuthState);
+    setAuth({});
   }, []);
 
   return (
@@ -64,7 +47,7 @@ const AuthProvider: React.FC = ({ children }) => {
   );
 };
 
-function useAuth(): AuthContextData {
+function useAuth() {
   const context = useContext(AuthContext);
 
   if (!context) {

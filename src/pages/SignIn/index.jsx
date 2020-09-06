@@ -26,22 +26,16 @@ import {
   FormContainer
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
-
 import { useAuth } from '../../hooks/auth';
 
-interface SignInFormData {
-  email: string;
-  password: string;
-}
-
-const SignIn: React.FC = () => {
+const SignIn = () => {
   const { signIn } = useAuth();
-  const formRef = useRef<FormHandles>(null);
-  const passwordInputRef = useRef<TextInput>(null);
+  const formRef = useRef(null);
+  const passwordInputRef = useRef(null);
   const navigation = useNavigation();
 
   const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+    async data => {
       try {
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({

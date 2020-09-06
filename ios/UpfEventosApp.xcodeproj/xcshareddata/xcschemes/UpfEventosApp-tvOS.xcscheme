@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1160"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "ReactNativeTSLoginExample-tvOS.app"
-               BlueprintName = "ReactNativeTSLoginExample-tvOS"
-               ReferencedContainer = "container:ReactNativeTSLoginExample.xcodeproj">
+               BuildableName = "UpfEventosApp-tvOS.app"
+               BlueprintName = "UpfEventosApp-tvOS"
+               ReferencedContainer = "container:UpfEventosApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "ReactNativeTSLoginExample-tvOSTests.xctest"
-               BlueprintName = "ReactNativeTSLoginExample-tvOSTests"
-               ReferencedContainer = "container:ReactNativeTSLoginExample.xcodeproj">
+               BuildableName = "UpfEventosApp-tvOSTests.xctest"
+               BlueprintName = "UpfEventosApp-tvOSTests"
+               ReferencedContainer = "container:UpfEventosApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "ReactNativeTSLoginExample-tvOS.app"
-            BlueprintName = "ReactNativeTSLoginExample-tvOS"
-            ReferencedContainer = "container:ReactNativeTSLoginExample.xcodeproj">
+            BuildableName = "UpfEventosApp-tvOS.app"
+            BlueprintName = "UpfEventosApp-tvOS"
+            ReferencedContainer = "container:UpfEventosApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "ReactNativeTSLoginExample-tvOS.app"
-            BlueprintName = "ReactNativeTSLoginExample-tvOS"
-            ReferencedContainer = "container:ReactNativeTSLoginExample.xcodeproj">
+            BuildableName = "UpfEventosApp-tvOS.app"
+            BlueprintName = "UpfEventosApp-tvOS"
+            ReferencedContainer = "container:UpfEventosApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

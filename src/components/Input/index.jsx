@@ -6,31 +6,14 @@ import React, {
   useImperativeHandle,
   forwardRef
 } from 'react';
-import { TextInputProps } from 'react-native';
 import { useField } from '@unform/core';
 
 import { Container, TextInput, Icon } from './styles';
 
-interface InputProps extends TextInputProps {
-  name: string;
-  icon: string;
-}
-
-interface InputValueReference {
-  value: string;
-}
-
-interface InputRef {
-  focus(): void;
-}
-
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, icon, ...rest },
-  ref
-) => {
-  const inputElementRef = useRef<any>(null);
+const Input = ({ name, icon, ...rest }, ref) => {
+  const inputElementRef = useRef(null);
   const { registerField, defaultValue, fieldName, error } = useField(name);
-  const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
+  const inputValueRef = useRef({ value: defaultValue });
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);

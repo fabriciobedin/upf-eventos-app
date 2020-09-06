@@ -25,19 +25,13 @@ import {
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-interface SignUpFormData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
-  const emailInputRef = useRef<TextInput>(null);
-  const passwordInputRef = useRef<TextInput>(null);
+const SignUp = () => {
+  const formRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
   const navigation = useNavigation();
 
-  const handleSignUp = useCallback(async (data: SignUpFormData) => {
+  const handleSignUp = useCallback(async data => {
     try {
       formRef.current?.setErrors({});
       const schema = Yup.object().shape({
