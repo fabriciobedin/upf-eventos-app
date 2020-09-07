@@ -5,12 +5,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TextInput,
   Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
-import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import logo from '../../assets/logo_upf.png';
@@ -24,12 +22,14 @@ import {
   FormContainer
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/auth';
 
 const SignUp = () => {
   const formRef = useRef(null);
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const navigation = useNavigation();
+  const { signUp } = useAuth();
 
   const handleSignUp = useCallback(async data => {
     try {
@@ -47,20 +47,13 @@ const SignUp = () => {
         abortEarly: false
       });
 
-      // await register({
-      //   name: data.name,
-      //   email: data.email,
-      //   password: data.password
-      // });
+      await signUp({
+        name: data.name,
+        email: data.email,
+        password: data.password
+      });
 
-      navigation.navigate('signin');
-
-      // history.push('/');
-      // addToast({
-      //   type: 'success',
-      //   title: 'Cadastro Realizado!',
-      //   description: 'Estamos lhe redirecionando para a página inicial.'
-      // });
+      // navigation.navigate('signin');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         formRef.current?.setErrors(getValidationErrors(err));
@@ -78,12 +71,10 @@ const SignUp = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled
-      >
+        enabled>
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
+          keyboardShouldPersistTaps="handled">
           <Container>
             <Image source={logo} />
 
@@ -136,8 +127,7 @@ const SignUp = () => {
       <BackToSignIn
         onPress={() => {
           navigation.goBack();
-        }}
-      >
+        }}>
         <Icon name="arrow-left" size={20} color="#777" />
         <BackToSignInText>Voltar para login</BackToSignInText>
       </BackToSignIn>

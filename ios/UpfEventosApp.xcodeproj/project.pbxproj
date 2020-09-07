@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* UpfEventosAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* UpfEventosAppTests.m */; };
 		4B19428F25057831002BECF3 /* RobotoSlab-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B19428E25057831002BECF3 /* RobotoSlab-Medium.ttf */; };
 		4B19429125057843002BECF3 /* RobotoSlab-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B19429025057843002BECF3 /* RobotoSlab-Regular.ttf */; };
+		4B1942932505920F002BECF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B1942922505920F002BECF3 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		CFB0F9FFBDCE23358AFEED67 /* libPods-UpfEventosApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3998952DCED16D07F921D966 /* libPods-UpfEventosApp.a */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,7 @@
 		43685699FE425CE677482176 /* Pods-UpfEventosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpfEventosApp.release.xcconfig"; path = "Target Support Files/Pods-UpfEventosApp/Pods-UpfEventosApp.release.xcconfig"; sourceTree = "<group>"; };
 		4B19428E25057831002BECF3 /* RobotoSlab-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "RobotoSlab-Medium.ttf"; path = "../assets/fonts/RobotoSlab-Medium.ttf"; sourceTree = "<group>"; };
 		4B19429025057843002BECF3 /* RobotoSlab-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "RobotoSlab-Regular.ttf"; path = "../assets/fonts/RobotoSlab-Regular.ttf"; sourceTree = "<group>"; };
+		4B1942922505920F002BECF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "UpfEventosApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		790D9E1457224E22A0F3A400 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		7E06A89923844FE19B44F4AE /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = UpfEventosApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4B1942922505920F002BECF3 /* GoogleService-Info.plist */,
 				4B19429025057843002BECF3 /* RobotoSlab-Regular.ttf */,
 				4B19428E25057831002BECF3 /* RobotoSlab-Medium.ttf */,
 				13B07FAE1A68108700A75B9A /* UpfEventosApp */,
@@ -376,6 +379,7 @@
 			files = (
 				4B19429125057843002BECF3 /* RobotoSlab-Regular.ttf in Resources */,
 				4B19428F25057831002BECF3 /* RobotoSlab-Medium.ttf in Resources */,
+				4B1942932505920F002BECF3 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -461,6 +465,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -481,6 +486,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -533,6 +539,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -553,6 +560,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

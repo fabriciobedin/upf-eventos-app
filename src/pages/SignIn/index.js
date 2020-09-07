@@ -5,12 +5,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TextInput,
   Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
-import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import logo from '../../assets/logo_upf.png';
@@ -52,13 +50,11 @@ const SignIn = () => {
           email: data.email,
           password: data.password
         });
-        // history.push('dashboard')
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           formRef.current?.setErrors(getValidationErrors(err));
           return;
         }
-
         Alert.alert(
           'Erro na autenticação',
           'Por favor, verifique se digitou suas credenciais corretamente.'
@@ -73,12 +69,10 @@ const SignIn = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled
-      >
+        enabled>
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
+          keyboardShouldPersistTaps="handled">
           <Container>
             <Image source={logo} />
 
@@ -113,8 +107,7 @@ const SignIn = () => {
               <Button
                 onPress={() => {
                   formRef.current?.submitForm();
-                }}
-              >
+                }}>
                 Entrar
               </Button>
             </FormContainer>
@@ -129,8 +122,7 @@ const SignIn = () => {
       <CreateAccount
         onPress={() => {
           navigation.navigate('SignUp');
-        }}
-      >
+        }}>
         <Icon name="log-in" size={20} color="#ed6707" />
         <CreateAccountText>Criar conta</CreateAccountText>
       </CreateAccount>

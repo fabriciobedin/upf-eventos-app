@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "535436163876",
+    "firebase_url": "https://upf-eventos.firebaseio.com",
+    "project_id": "upf-eventos",
+    "storage_bucket": "upf-eventos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535436163876:android:9030a52df50a894cedd1b1",
+        "android_client_info": {
+          "package_name": "app.web.upfeventosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535436163876-vrh85qju3npic15osn5q3o0ib0jddof8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.web.upfeventosapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "535436163876-lnksb31jjm69hkk6fs1ptusm2d7r9lj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBObhBaspiSydhORQNPPXdXM3dsNBPM_O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535436163876-lnksb31jjm69hkk6fs1ptusm2d7r9lj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

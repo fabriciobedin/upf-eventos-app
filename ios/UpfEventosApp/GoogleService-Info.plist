@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>535436163876-n2r7bq6i0leqvoq4ulr32d50fh75143l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.535436163876-n2r7bq6i0leqvoq4ulr32d50fh75143l</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>535436163876-vrh85qju3npic15osn5q3o0ib0jddof8.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDtJcMS69vAPe8UDGW9Q7__iMnhdi3ocMY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>535436163876</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.UpfEventosApp</string>
+	<key>PROJECT_ID</key>
+	<string>upf-eventos</string>
+	<key>STORAGE_BUCKET</key>
+	<string>upf-eventos.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:535436163876:ios:afec011952706263edd1b1</string>
+	<key>DATABASE_URL</key>
+	<string>https://upf-eventos.firebaseio.com</string>
+</dict>
+</plist>
