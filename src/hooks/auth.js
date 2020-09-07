@@ -33,8 +33,26 @@ const AuthProvider = ({ children }) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(res => {
-        console.log(`User ${res['user']['displayName']} logged in!`);
-        setUser(res);
+        firestore()
+          .collection('Users')
+          .doc(res.user.uid)
+          .get()
+          .then(async FbUser => {
+            console.log(FbUser);
+            setUser({
+              uid: res.user.uid,
+              name: FbUser._data.name,
+              email: FbUser._data.email
+            });
+            await AsyncStorage.setItem(
+              '@upf-eventos:user',
+              JSON.stringify({
+                uid: res.user.uid,
+                name: FbUser._data.name,
+                email: FbUser._data.email
+              })
+            );
+          });
         setLoading(false);
       })
       .catch(err => {
@@ -55,14 +73,29 @@ const AuthProvider = ({ children }) => {
           .collection('Users')
           .doc(res.user.uid)
           .set({ email, name })
-          .then(async () => {
+          .then(() => {
+            firestore()
+              .collection('Users')
+              .doc(res.user.uid)
+              .get()
+              .then(async FbUser => {
+                console.log(FbUser);
+                setUser({
+                  uid: res.user.uid,
+                  name: FbUser._data.name,
+                  email: FbUser._data.email
+                });
+                await AsyncStorage.setItem(
+                  '@upf-eventos:user',
+                  JSON.stringify({
+                    uid: res.user.uid,
+                    name: FbUser._data.name,
+                    email: FbUser._data.email
+                  })
+                );
+              });
             setLoading(false);
-            setUser(res);
-            await AsyncStorage.setItem(
-              '@upf-eventos:user',
-              JSON.stringify(res)
-            );
-            console.log('User created');
+            console.log(`User ${name} created`);
           })
           .catch(err => {
             console.log(err);

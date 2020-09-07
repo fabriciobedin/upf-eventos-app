@@ -17,7 +17,7 @@ const Routes = () => {
     );
   }
 
-  return user['user'] ? <AppRoutes /> : <AuthRoutes />;
+  return user.uid ? <AppRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;
