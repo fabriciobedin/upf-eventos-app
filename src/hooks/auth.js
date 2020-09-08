@@ -42,14 +42,16 @@ const AuthProvider = ({ children }) => {
             setUser({
               uid: res.user.uid,
               name: FbUser._data.name,
-              email: FbUser._data.email
+              email: FbUser._data.email,
+              avatarUrl: FbUser._data.avatarUrl
             });
             await AsyncStorage.setItem(
               '@upf-eventos:user',
               JSON.stringify({
                 uid: res.user.uid,
                 name: FbUser._data.name,
-                email: FbUser._data.email
+                email: FbUser._data.email,
+                avatarUrl: FbUser._data.avatarUrl
               })
             );
           });
@@ -61,6 +63,7 @@ const AuthProvider = ({ children }) => {
           'Erro na autenticação!',
           'Por favor, verifique se digitou corretamente o email e senha.'
         );
+        setLoading(false);
       });
   }, []);
 
@@ -83,14 +86,18 @@ const AuthProvider = ({ children }) => {
                 setUser({
                   uid: res.user.uid,
                   name: FbUser._data.name,
-                  email: FbUser._data.email
+                  email: FbUser._data.email,
+                  avatarUrl:
+                    'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
                 });
                 await AsyncStorage.setItem(
                   '@upf-eventos:user',
                   JSON.stringify({
                     uid: res.user.uid,
                     name: FbUser._data.name,
-                    email: FbUser._data.email
+                    email: FbUser._data.email,
+                    avatarUrl:
+                      'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
                   })
                 );
               });
@@ -103,6 +110,7 @@ const AuthProvider = ({ children }) => {
               'Erro ao cadastrar usuário!',
               'Por favor, verifique as informações inseridas e tente novamente em alguns minutos.'
             );
+            setLoading(false);
           });
       })
       .catch(err => {
@@ -113,6 +121,7 @@ const AuthProvider = ({ children }) => {
             'Por favor, tente fazer login ao invés de criar uma nova conta.'
           );
         }
+        setLoading(false);
         setUser({});
       });
   }, []);
@@ -122,10 +131,10 @@ const AuthProvider = ({ children }) => {
     auth()
       .signOut()
       .then(async () => {
-        setLoading(false);
         setUser({});
         await AsyncStorage.removeItem('@upf-eventos:user');
         console.log('User signed out!');
+        setLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -133,11 +142,38 @@ const AuthProvider = ({ children }) => {
           'Erro ao tentar deslogar!',
           'Por favor, atualize a página e tente novamente.'
         );
+        setLoading(false);
       });
   }, []);
 
+  const updateUser = useCallback(({ name, email, avatarUrl }) => {
+    setLoading(true);
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .set({ name, email, avatarUrl })
+      .then(async () => {
+        setUser({ name, email, avatarUrl });
+        await AsyncStorage.setItem(
+          '@upf-eventos:user',
+          JSON.stringify({ name, email, avatarUrl })
+        );
+        setLoading(false);
+        console.log(`User ${name} updated`);
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert(
+          'Erro ao cadastrar usuário!',
+          'Por favor, verifique as informações inseridas e tente novamente em alguns minutos.'
+        );
+        setLoading(false);
+      });
+  });
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ user, loading, signIn, signUp, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -65,8 +65,6 @@ export const EventImage = styled.Image`
   width: 72px;
   height: 72px;
   border-radius: 36px;
-  border: 2px;
-  border-color: #e04113;
 `;
 
 export const EventInfo = styled.View`

@@ -80,7 +80,8 @@ const Dashboard = () => {
           <UserAvatar
             source={{
               uri:
-                'https://avatars1.githubusercontent.com/u/18118086?s=460&u=c92e79f9ed6b4e502cfa8e1e3ff8de70aa8e14fb&v=4'
+                user.avatarUrl ||
+                'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
             }}
           />
         </ProfileButton>

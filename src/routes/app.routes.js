@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Dashboard from '../pages/Dashboard';
-import Profile from '../pages/Profile';
-import EventDetails from '../pages/EventDetails';
+import Dashboard from '../screens/Dashboard';
+import Profile from '../screens/Profile';
+import EventDetails from '../screens/EventDetails';
 
 const App = createStackNavigator();
 

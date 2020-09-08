@@ -10,7 +10,7 @@ import { useField } from '@unform/core';
 
 import { Container, TextInput, Icon } from './styles';
 
-const Input = ({ name, icon, ...rest }, ref) => {
+const Input = ({ name, icon, containerStyle = {}, ...rest }, ref) => {
   const inputElementRef = useRef(null);
   const { registerField, defaultValue, fieldName, error } = useField(name);
   const inputValueRef = useRef({ value: defaultValue });
@@ -38,7 +38,7 @@ const Input = ({ name, icon, ...rest }, ref) => {
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
-      setValue(ref: any, value: string) {
+      setValue(ref, value) {
         inputValueRef.current.value = value;
         inputElementRef.current.setNativeProps({ text: value });
       },
@@ -50,7 +50,7 @@ const Input = ({ name, icon, ...rest }, ref) => {
   }, [fieldName, registerField]);
 
   return (
-    <Container isFocused={isFocused} isErrored={!!error}>
+    <Container style={containerStyle} isFocused={isFocused} isErrored={!!error}>
       <Icon
         name={icon}
         size={20}

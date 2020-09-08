@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
 
 import {
-  Container,
   Header,
   BackButton,
   HeaderTitle,
@@ -12,7 +11,7 @@ import {
   SubEventsList,
   SubEventsListTitle,
   SubEventContainer,
-  SubEventImage,
+  ProfileButton,
   SubEventInfo,
   SubEventInfoTitle,
   SubEventInfoView,
@@ -31,6 +30,10 @@ const EventDetails = () => {
     .collection('eventos')
     .doc(eventId)
     .collection('subeventos');
+
+  const navigateToProfile = useCallback(() => {
+    navigate('Profile');
+  }, [navigate]);
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -76,12 +79,15 @@ const EventDetails = () => {
         </BackButton>
         <HeaderTitle>{eventTitle}</HeaderTitle>
 
-        <UserAvatar
-          source={{
-            uri:
-              'https://avatars1.githubusercontent.com/u/18118086?s=460&u=c92e79f9ed6b4e502cfa8e1e3ff8de70aa8e14fb&v=4'
-          }}
-        />
+        <ProfileButton onPress={navigateToProfile}>
+          <UserAvatar
+            source={{
+              uri:
+                user.avatarUrl ||
+                'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
+            }}
+          />
+        </ProfileButton>
       </Header>
 
       <SubEventsList
