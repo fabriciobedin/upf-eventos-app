@@ -22,7 +22,7 @@ import {
 } from './styles';
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [events, setEvents] = useState();
   const { navigate } = useNavigation();
   const refEvents = firestore().collection('eventos');
@@ -31,9 +31,16 @@ const Dashboard = () => {
     navigate('Profile');
   }, [navigate]);
 
+  const navigateToEventDetails = useCallback(
+    (eventId, eventTitle) => {
+      navigate('EventDetails', { eventId, eventTitle });
+    },
+    [navigate]
+  );
+
   useEffect(() => {
     return refEvents.onSnapshot(querySnapshot => {
-      const list = [];
+      const eventos = [];
       querySnapshot.forEach(doc => {
         const {
           titulo,
@@ -41,21 +48,23 @@ const Dashboard = () => {
           dataInicial,
           dataFinal,
           codigo,
-          participantes
+          imgLink
         } = doc.data();
 
-        list.push({
+        eventos.push({
           id: doc.id,
           titulo,
           descricao,
           dataInicial,
           dataFinal,
           codigo,
-          participantes: participantes.length
+          imgLink,
+          participantes: 10,
+          subeventos: 2
         });
       });
 
-      setEvents(list);
+      setEvents(eventos);
     });
   }, []);
 
@@ -84,13 +93,9 @@ const Dashboard = () => {
           <EventsListTitle>Próximos Eventos</EventsListTitle>
         }
         renderItem={({ item: event }) => (
-          <EventContainer onPress={() => {}}>
-            <EventImage
-              source={{
-                uri:
-                  'https://avatars1.githubusercontent.com/u/18118086?s=460&u=c92e79f9ed6b4e502cfa8e1e3ff8de70aa8e14fb&v=4'
-              }}
-            />
+          <EventContainer
+            onPress={() => navigateToEventDetails(event.id, event.titulo)}>
+            <EventImage source={{ uri: event.imgLink }} />
             <EventInfo>
               <EventInfoTitle>{event.titulo}</EventInfoTitle>
               <EventInfoView>
@@ -99,7 +104,7 @@ const Dashboard = () => {
               </EventInfoView>
               <EventInfoView>
                 <Icon name="plus-circle" size={14} color="#e04113" />
-                <EventInfoText>{`${3} subeventos     |    `}</EventInfoText>
+                <EventInfoText>{`${event.subeventos} subeventos     |    `}</EventInfoText>
                 <Icon name="user" size={14} color="#e04113" />
                 <EventInfoText>{`${event.participantes} inscritos`}</EventInfoText>
               </EventInfoView>

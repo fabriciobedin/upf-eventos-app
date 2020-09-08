@@ -1,57 +1,55 @@
 import styled from 'styled-components/native';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import {
+  getStatusBarHeight,
+  getBottomSpace
+} from 'react-native-iphone-x-helper';
 import { FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.View`
-  flex: 1;
-`;
+export const Container = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: getBottomSpace()
+  }
+})``;
 
 export const Header = styled.View`
   padding: 24px;
   padding-top: ${getStatusBarHeight() + 24}px;
-  background: #ed6707;
+  background: #28262e;
 
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 `;
 
+export const BackButton = styled.TouchableOpacity``;
+
 export const HeaderTitle = styled.Text`
-  color: #fcc;
-  font-size: 17px;
-  font-family: 'RobotoSlab-Regular';
-  line-height: 28px;
-`;
-
-export const UserName = styled.Text`
-  color: #fff;
-  font-size: 19px;
+  color: #f4ede8;
+  font-size: 20px;
   font-family: 'RobotoSlab-Medium';
+  line-height: 28px;
+  margin-left: 16px;
 `;
-
-export const ProfileButton = styled.TouchableOpacity``;
 
 export const UserAvatar = styled.Image`
   width: 56px;
   height: 56px;
   border-radius: 28px;
-  /* border: 2px solid;
-  border-color: #fff; */
+  margin-left: auto;
 `;
 
-export const EventsList = styled(FlatList)`
+export const SubEventsList = styled(FlatList)`
   padding: 16px;
 `;
 
-export const EventsListTitle = styled.Text`
+export const SubEventsListTitle = styled.Text`
   font-family: 'RobotoSlab-Medium';
   color: #777;
   font-size: 20px;
   margin-bottom: 16px;
 `;
 
-export const EventContainer = styled(RectButton)`
+export const SubEventContainer = styled(RectButton)`
   flex-direction: row;
   align-items: center;
   padding: 20px;
@@ -61,7 +59,7 @@ export const EventContainer = styled(RectButton)`
   border-radius: 10px;
 `;
 
-export const EventImage = styled.Image`
+export const SubEventImage = styled.Image`
   width: 72px;
   height: 72px;
   border-radius: 36px;
@@ -69,24 +67,24 @@ export const EventImage = styled.Image`
   border-color: #e04113;
 `;
 
-export const EventInfo = styled.View`
+export const SubEventInfo = styled.View`
   flex: 1;
   margin-left: 20px;
 `;
 
-export const EventInfoTitle = styled.Text`
+export const SubEventInfoTitle = styled.Text`
   font-family: 'RobotoSlab-Medium';
   font-size: 15px;
   color: #555;
 `;
 
-export const EventInfoView = styled.View`
+export const SubEventInfoView = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: 8px;
 `;
 
-export const EventInfoText = styled.Text`
+export const SubEventInfoText = styled.Text`
   margin-left: 8px;
   color: #777;
   font-family: 'RobotoSlab-Regular';
