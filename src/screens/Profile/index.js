@@ -68,9 +68,10 @@ const SignUp = () => {
 
       const { name, email, oldPassword, password, confirmPassword } = data;
       const formData = {
+        uid: user.uid,
         name,
         email,
-        avatarUrl,
+        avatarUrl: user.avatarUrl,
         ...(oldPassword ? { oldPassword, password, confirmPassword } : {})
       };
 
@@ -90,6 +91,7 @@ const SignUp = () => {
         formRef.current.setErrors(errors);
         return;
       }
+      console.log(err);
 
       Alert.alert(
         'Erro na atualização do perfil!',

@@ -39,6 +39,17 @@ const EventDetails = () => {
     goBack();
   }, [goBack]);
 
+  const navigateToSubEventDetails = useCallback(
+    (subEventId, subEventTitle, subEventDescription) => {
+      navigate('SubEventDetails', {
+        subEventId,
+        subEventTitle,
+        subEventDescription
+      });
+    },
+    [navigate]
+  );
+
   console.log(subEvents);
 
   useEffect(() => {
@@ -97,8 +108,14 @@ const EventDetails = () => {
           <SubEventsListTitle>SubEventos</SubEventsListTitle>
         }
         renderItem={({ item: subEvent }) => (
-          <SubEventContainer onPress={() => {}}>
-            {/* <SubEventImage source={{ uri: subEvent.imgLink }} /> */}
+          <SubEventContainer
+            onPress={() =>
+              navigateToSubEventDetails(
+                subEvent.id,
+                subEvent.titulo,
+                subEvent.descricao
+              )
+            }>
             <SubEventInfo>
               <SubEventInfoTitle>{subEvent.titulo}</SubEventInfoTitle>
               <SubEventInfoView>
@@ -107,12 +124,6 @@ const EventDetails = () => {
                 <Icon name="clock" size={14} color="#e04113" />
                 <SubEventInfoText>{`${subEvent.horaInicial} - ${subEvent.horaFinal}`}</SubEventInfoText>
               </SubEventInfoView>
-              {/* <EventInfoView>
-                <Icon name="plus-circle" size={14} color="#e04113" />
-                <EventInfoText>{`${subEvent.subeventos} subeventos     |    `}</EventInfoText>
-                <Icon name="user" size={14} color="#e04113" />
-                <EventInfoText>{`${event.participantes} inscritos`}</EventInfoText>
-              </EventInfoView> */}
             </SubEventInfo>
           </SubEventContainer>
         )}

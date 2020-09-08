@@ -146,7 +146,7 @@ const AuthProvider = ({ children }) => {
       });
   }, []);
 
-  const updateUser = useCallback(({ name, email, avatarUrl }) => {
+  const updateUser = useCallback(({ uid, name, email, avatarUrl }) => {
     setLoading(true);
     firestore()
       .collection('Users')
