@@ -40,11 +40,11 @@ const EventDetails = () => {
   }, [goBack]);
 
   const navigateToSubEventDetails = useCallback(
-    (subEventId, subEventTitle, subEventDescription) => {
+    (subEventId, subEventTitle) => {
       navigate('SubEventDetails', {
         subEventId,
-        subEventTitle,
-        subEventDescription
+        eventId,
+        subEventTitle
       });
     },
     [navigate]
@@ -60,7 +60,6 @@ const EventDetails = () => {
       querySnapshot.forEach(doc => {
         const {
           titulo,
-          descricao,
           dataInicial,
           horaInicial,
           horaFinal,
@@ -70,7 +69,6 @@ const EventDetails = () => {
         subEventsFirestore.push({
           id: doc.id,
           titulo,
-          descricao,
           dataInicial,
           horaInicial,
           horaFinal,
@@ -110,11 +108,7 @@ const EventDetails = () => {
         renderItem={({ item: subEvent }) => (
           <SubEventContainer
             onPress={() =>
-              navigateToSubEventDetails(
-                subEvent.id,
-                subEvent.titulo,
-                subEvent.descricao
-              )
+              navigateToSubEventDetails(subEvent.id, subEvent.titulo)
             }>
             <SubEventInfo>
               <SubEventInfoTitle>{subEvent.titulo}</SubEventInfoTitle>

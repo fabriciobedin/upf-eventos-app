@@ -45,6 +45,7 @@ const AuthProvider = ({ children }) => {
               email: FbUser._data.email,
               avatarUrl: FbUser._data.avatarUrl
             });
+            setLoading(false);
             await AsyncStorage.setItem(
               '@upf-eventos:user',
               JSON.stringify({
@@ -55,7 +56,6 @@ const AuthProvider = ({ children }) => {
               })
             );
           });
-        setLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -90,6 +90,7 @@ const AuthProvider = ({ children }) => {
                   avatarUrl:
                     'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
                 });
+                setLoading(false);
                 await AsyncStorage.setItem(
                   '@upf-eventos:user',
                   JSON.stringify({
@@ -101,7 +102,6 @@ const AuthProvider = ({ children }) => {
                   })
                 );
               });
-            setLoading(false);
             console.log(`User ${name} created`);
           })
           .catch(err => {

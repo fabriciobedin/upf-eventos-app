@@ -3,6 +3,8 @@ import {
   getStatusBarHeight,
   getBottomSpace
 } from 'react-native-iphone-x-helper';
+import { FlatList } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -51,4 +53,36 @@ export const UserAvatar = styled.Image`
   width: 56px;
   height: 56px;
   border-radius: 28px;
+`;
+
+export const ParticipantsList = styled(FlatList)`
+  padding: 16px;
+`;
+
+export const ListTitle = styled.Text`
+  font-family: 'RobotoSlab-Medium';
+  color: #777;
+  font-size: 20px;
+  margin-bottom: 16px;
+`;
+
+export const ParticipantsListContainer = styled(RectButton)`
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 16px;
+
+  background: #ddd;
+  border-radius: 10px;
+`;
+
+export const ParticipantsInfo = styled.View`
+  flex: 1;
+  margin-left: 20px;
+`;
+
+export const ParticipantsInfoTitle = styled.Text`
+  font-family: 'RobotoSlab-Medium';
+  font-size: 15px;
+  color: #555;
 `;
