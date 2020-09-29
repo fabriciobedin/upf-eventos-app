@@ -26,26 +26,13 @@ export const BackButton = styled.TouchableOpacity``;
 
 export const HeaderTitle = styled.Text`
   color: #f4ede8;
-  font-size: 20px;
+  font-size: 18px;
   font-family: 'RobotoSlab-Medium';
   line-height: 28px;
 `;
 
-export const UserAvatar = styled.Image`
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
-`;
-
 export const SubEventsList = styled(FlatList)`
   padding: 16px;
-`;
-
-export const SubEventsListTitle = styled.Text`
-  font-family: 'RobotoSlab-Medium';
-  color: #777;
-  font-size: 20px;
-  margin-bottom: 16px;
 `;
 
 export const SubEventContainer = styled(RectButton)`
@@ -58,17 +45,9 @@ export const SubEventContainer = styled(RectButton)`
   border-radius: 10px;
 `;
 
-export const SubEventImage = styled.Image`
-  width: 72px;
-  height: 72px;
-  border-radius: 36px;
-  border: 2px;
-  border-color: #e04113;
-`;
-
 export const SubEventInfo = styled.View`
   flex: 1;
-  margin-left: 20px;
+  /* margin-left: 20px; */
 `;
 
 export const SubEventInfoTitle = styled.Text`
@@ -88,5 +67,3 @@ export const SubEventInfoText = styled.Text`
   color: #777;
   font-family: 'RobotoSlab-Regular';
 `;
-
-export const ProfileButton = styled.TouchableOpacity``;

@@ -7,11 +7,8 @@ import {
   Header,
   BackButton,
   HeaderTitle,
-  UserAvatar,
   SubEventsList,
-  SubEventsListTitle,
   SubEventContainer,
-  ProfileButton,
   SubEventInfo,
   SubEventInfoTitle,
   SubEventInfoView,
@@ -19,8 +16,9 @@ import {
 } from './styles';
 
 import { useAuth } from '../../hooks/auth';
+import TextTitle from '../../components/TextTitle';
 
-const EventDetails = () => {
+const SubEvents = () => {
   const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
@@ -31,17 +29,13 @@ const EventDetails = () => {
     .doc(eventId)
     .collection('subeventos');
 
-  const navigateToProfile = useCallback(() => {
-    navigate('Profile');
-  }, [navigate]);
-
   const navigateBack = useCallback(() => {
     goBack();
   }, [goBack]);
 
-  const navigateToSubEventDetails = useCallback(
+  const navigateToCodeScanner = useCallback(
     (subEventId, subEventTitle) => {
-      navigate('SubEventDetails', {
+      navigate('CodeScanner', {
         subEventId,
         eventId,
         subEventTitle
@@ -49,8 +43,6 @@ const EventDetails = () => {
     },
     [navigate]
   );
-
-  console.log(subEvents);
 
   useEffect(() => {
     return refSubEvent.onSnapshot(querySnapshot => {
@@ -87,29 +79,15 @@ const EventDetails = () => {
           <Icon name="chevron-left" size={24} color="#999591" />
         </BackButton>
         <HeaderTitle>{eventTitle}</HeaderTitle>
-
-        <ProfileButton onPress={navigateToProfile}>
-          <UserAvatar
-            source={{
-              uri:
-                user.avatarUrl ||
-                'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
-            }}
-          />
-        </ProfileButton>
       </Header>
 
       <SubEventsList
         data={subEvents}
         keyExtractor={subEvent => subEvent.id}
-        ListHeaderComponent={
-          <SubEventsListTitle>SubEventos</SubEventsListTitle>
-        }
+        ListHeaderComponent={<TextTitle>SubEventos</TextTitle>}
         renderItem={({ item: subEvent }) => (
           <SubEventContainer
-            onPress={() =>
-              navigateToSubEventDetails(subEvent.id, subEvent.titulo)
-            }>
+            onPress={() => navigateToCodeScanner(subEvent.id, subEvent.titulo)}>
             <SubEventInfo>
               <SubEventInfoTitle>{subEvent.titulo}</SubEventInfoTitle>
               <SubEventInfoView>
@@ -126,4 +104,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;
+export default SubEvents;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Dashboard from '../screens/Dashboard';
+import Events from '../screens/Events';
 import Profile from '../screens/Profile';
-import EventDetails from '../screens/EventDetails';
-import SubEventDetails from '../screens/SubEventDetails';
+import SubEvents from '../screens/SubEvents';
+import CodeScanner from '../screens/CodeScanner';
 
 const App = createStackNavigator();
 
@@ -14,10 +14,10 @@ const AppRoutes = () => (
       headerShown: false,
       cardStyle: { backgroundColor: '#eee' }
     }}>
-    <App.Screen name="Dashboard" component={Dashboard} />
+    <App.Screen name="Events" component={Events} />
     <App.Screen name="Profile" component={Profile} />
-    <App.Screen name="EventDetails" component={EventDetails} />
-    <App.Screen name="SubEventDetails" component={SubEventDetails} />
+    <App.Screen name="SubEvents" component={SubEvents} />
+    <App.Screen name="CodeScanner" component={CodeScanner} />
   </App.Navigator>
 );
 

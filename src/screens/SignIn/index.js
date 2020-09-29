@@ -77,7 +77,7 @@ const SignIn = () => {
             <Image source={logo} />
 
             <View>
-              <Title>Faça seu login</Title>
+              <Title>Login</Title>
             </View>
 
             <FormContainer ref={formRef} onSubmit={handleSignIn}>

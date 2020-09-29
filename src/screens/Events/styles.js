@@ -44,13 +44,6 @@ export const EventsList = styled(FlatList)`
   padding: 16px;
 `;
 
-export const EventsListTitle = styled.Text`
-  font-family: 'RobotoSlab-Medium';
-  color: #777;
-  font-size: 20px;
-  margin-bottom: 16px;
-`;
-
 export const EventContainer = styled(RectButton)`
   flex-direction: row;
   align-items: center;

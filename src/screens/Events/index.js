@@ -12,7 +12,6 @@ import {
   ProfileButton,
   UserAvatar,
   EventsList,
-  EventsListTitle,
   EventContainer,
   EventImage,
   EventInfo,
@@ -21,7 +20,9 @@ import {
   EventInfoText
 } from './styles';
 
-const Dashboard = () => {
+import TextTitle from '../../components/TextTitle';
+
+const Events = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState();
   const { navigate } = useNavigation();
@@ -31,9 +32,9 @@ const Dashboard = () => {
     navigate('Profile');
   }, [navigate]);
 
-  const navigateToEventDetails = useCallback(
+  const navigateToSubEvents = useCallback(
     (eventId, eventTitle) => {
-      navigate('EventDetails', { eventId, eventTitle });
+      navigate('SubEvents', { eventId, eventTitle });
     },
     [navigate]
   );
@@ -90,12 +91,10 @@ const Dashboard = () => {
       <EventsList
         data={events}
         keyExtractor={event => event.id}
-        ListHeaderComponent={
-          <EventsListTitle>Próximos Eventos</EventsListTitle>
-        }
+        ListHeaderComponent={<TextTitle>Eventos</TextTitle>}
         renderItem={({ item: event }) => (
           <EventContainer
-            onPress={() => navigateToEventDetails(event.id, event.titulo)}>
+            onPress={() => navigateToSubEvents(event.id, event.titulo)}>
             <EventImage source={{ uri: event.imgLink }} />
             <EventInfo>
               <EventInfoTitle>{event.titulo}</EventInfoTitle>
@@ -117,4 +116,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Events;

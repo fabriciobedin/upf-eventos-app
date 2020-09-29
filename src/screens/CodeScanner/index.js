@@ -3,7 +3,6 @@ import {
   Alert,
   KeyboardAvoidingView,
   ScrollView,
-  View,
   Platform
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -17,15 +16,12 @@ import {
   Container,
   BackButton,
   HeaderTitle,
-  ParticipantsInfoTitle,
-  FormContainer,
-  InputCode,
-  ButtonSendCode,
-  ButtonSendCodeText
+  InfoTitle,
+  FormContainer
 } from './styles';
 import InputWithButton from '../../components/InputWithButton';
 
-const SubEventDetails = () => {
+const CodeScanner = () => {
   // const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
@@ -92,7 +88,7 @@ const SubEventDetails = () => {
         <BackButton onPress={navigateBack}>
           <Icon name="chevron-left" size={24} color="#999591" />
         </BackButton>
-        <HeaderTitle>Confirmação de Presença</HeaderTitle>
+        <HeaderTitle>Leitura do crachá</HeaderTitle>
       </Header>
 
       <KeyboardAvoidingView
@@ -102,32 +98,14 @@ const SubEventDetails = () => {
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
           keyboardShouldPersistTaps="handled">
-          <ParticipantsInfoTitle>Escaneie o QRCode</ParticipantsInfoTitle>
+          <InfoTitle>Escaneie o QRCode</InfoTitle>
           <Container>
-            {/* <Container> */}
             <QRCodeScanner
               onRead={e => {
                 readQRCode(e.data);
               }}
             />
-            {/* <ParticipantsList
-          data={participants}
-          keyExtractor={participant => participant.participantId}
-          ListHeaderComponent={<ListTitle>{subEventTitle}</ListTitle>}
-          renderItem={({ item: participant }) => (
-            <ParticipantsListContainer>
-              <ParticipantsInfo>
-                <ParticipantsInfoTitle>
-                  {participant.participantId}
-                </ParticipantsInfoTitle>
-              </ParticipantsInfo>
-            </ParticipantsListContainer>
-          )}
-        /> */}
-            {/* </Container> */}
-            <ParticipantsInfoTitle>
-              ou, digite o código abaixo
-            </ParticipantsInfoTitle>
+            <InfoTitle>ou, digite o código abaixo</InfoTitle>
 
             <FormContainer ref={formRef} onSubmit={handleSendCode}>
               <InputWithButton
@@ -149,10 +127,8 @@ const SubEventDetails = () => {
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
-
-      {/* <BackToSignIn></BackToSignIn> */}
     </>
   );
 };
 
-export default SubEventDetails;
+export default CodeScanner;
