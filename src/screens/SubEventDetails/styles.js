@@ -5,6 +5,7 @@ import {
 } from 'react-native-iphone-x-helper';
 import { FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import { Form } from '@unform/mobile';
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -85,4 +86,46 @@ export const ParticipantsInfoTitle = styled.Text`
   font-family: 'RobotoSlab-Medium';
   font-size: 15px;
   color: #555;
+`;
+
+export const FormContainer = styled(Form)`
+  width: 100%;
+  flex-direction: row;
+  flex: 1;
+  padding: 16px;
+  align-items: center;
+`;
+
+export const InputCode = styled.TextInput`
+  width: 100%;
+  flex-direction: row;
+  flex: 0.7;
+
+  height: 50px;
+  padding: 0 16px;
+  background: #fff;
+
+  align-items: center;
+
+  border-radius: 10px;
+  border-width: 2px;
+  border-color: #fff;
+`;
+
+export const ButtonSendCode = styled(RectButton)`
+  width: 100%;
+  flex-direction: row;
+  flex: 0.3;
+  width: 100%;
+  height: 50px;
+  background: #ed6707;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ButtonSendCodeText = styled.Text`
+  color: #eee;
+  font-size: 17px;
+  font-family: 'RobotoSlab-Medium';
 `;

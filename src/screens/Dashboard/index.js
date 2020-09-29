@@ -105,9 +105,9 @@ const Dashboard = () => {
               </EventInfoView>
               <EventInfoView>
                 <Icon name="plus-circle" size={14} color="#e04113" />
-                <EventInfoText>{`${event.subeventos} subeventos     |    `}</EventInfoText>
+                <EventInfoText>{`${event.subeventos}     |    `}</EventInfoText>
                 <Icon name="user" size={14} color="#e04113" />
-                <EventInfoText>{`${event.participantes} inscritos`}</EventInfoText>
+                <EventInfoText>{`${event.participantes}`}</EventInfoText>
               </EventInfoView>
             </EventInfo>
           </EventContainer>

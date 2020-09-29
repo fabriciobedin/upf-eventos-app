@@ -1,26 +1,35 @@
-import React, { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import React, { useCallback, useState, useRef } from 'react';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+  Platform
+} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import firestore from '@react-native-firebase/firestore';
+import * as Yup from 'yup';
 
 import {
   Header,
   Container,
   BackButton,
   HeaderTitle,
-  ParticipantsList,
-  ListTitle,
-  ParticipantsListContainer,
-  ParticipantsInfo,
-  ParticipantsInfoTitle
+  ParticipantsInfoTitle,
+  FormContainer,
+  InputCode,
+  ButtonSendCode,
+  ButtonSendCodeText
 } from './styles';
+import InputWithButton from '../../components/InputWithButton';
 
 const SubEventDetails = () => {
   // const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
+  const formRef = useRef(null);
   const { subEventId, eventId, subEventTitle } = route.params;
 
   const [participants, setParticipants] = useState([]);
@@ -49,19 +58,32 @@ const SubEventDetails = () => {
       });
   }, []);
 
-  const readQRCode = useCallback(e => {
-    const [qrcodeEventId, qrcodeParticipantId] = e.data.split('|');
+  const readQRCode = useCallback(
+    code => {
+      const [qrcodeEventId, qrcodeParticipantId] = code.split('|');
 
-    if (!validateEvent(qrcodeEventId)) return;
-    getParticipantData(qrcodeParticipantId);
+      if (!validateEvent(qrcodeEventId)) return;
+      getParticipantData(qrcodeParticipantId);
 
-    setParticipants([
-      ...participants,
-      {
-        eventId: qrcodeEventId,
-        participantId: qrcodeParticipantId
-      }
-    ]);
+      setParticipants([
+        ...participants,
+        {
+          eventId: qrcodeEventId,
+          participantId: qrcodeParticipantId
+        }
+      ]);
+    },
+    [participants]
+  );
+
+  const handleSendCode = useCallback(async data => {
+    formRef.current.setErrors({});
+    const schema = Yup.object().shape({
+      subscription: Yup.string().required('Código obrigatório!')
+    });
+    await schema.validate(data);
+
+    readQRCode(data.subscription);
   }, []);
 
   return (
@@ -72,9 +94,23 @@ const SubEventDetails = () => {
         </BackButton>
         <HeaderTitle>Confirmação de Presença</HeaderTitle>
       </Header>
-      <Container>
-        <QRCodeScanner onRead={readQRCode} />
-        <ParticipantsList
+
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled>
+        <ScrollView
+          contentContainerStyle={{ flex: 1 }}
+          keyboardShouldPersistTaps="handled">
+          <ParticipantsInfoTitle>Escaneie o QRCode</ParticipantsInfoTitle>
+          <Container>
+            {/* <Container> */}
+            <QRCodeScanner
+              onRead={e => {
+                readQRCode(e.data);
+              }}
+            />
+            {/* <ParticipantsList
           data={participants}
           keyExtractor={participant => participant.participantId}
           ListHeaderComponent={<ListTitle>{subEventTitle}</ListTitle>}
@@ -87,8 +123,34 @@ const SubEventDetails = () => {
               </ParticipantsInfo>
             </ParticipantsListContainer>
           )}
-        />
-      </Container>
+        /> */}
+            {/* </Container> */}
+            <ParticipantsInfoTitle>
+              ou, digite o código abaixo
+            </ParticipantsInfoTitle>
+
+            <FormContainer ref={formRef} onSubmit={handleSendCode}>
+              <InputWithButton
+                autoCorrect={false}
+                autoCapitalize="none"
+                name="subscription"
+                icon="lock"
+                placeholder="Código"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  formRef.current.submitForm();
+                }}
+                buttonText="Enviar"
+                onPress={() => {
+                  formRef.current.submitForm();
+                }}
+              />
+            </FormContainer>
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      {/* <BackToSignIn></BackToSignIn> */}
     </>
   );
 };
