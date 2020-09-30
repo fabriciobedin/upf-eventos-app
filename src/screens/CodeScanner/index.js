@@ -22,7 +22,6 @@ import {
 import InputWithButton from '../../components/InputWithButton';
 
 const CodeScanner = () => {
-  // const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
   const formRef = useRef(null);
@@ -44,41 +43,38 @@ const CodeScanner = () => {
     return false;
   }, []);
 
-  const getParticipantData = useCallback(participantId => {
-    firestore()
-      .collection('participantes')
-      .doc(participantId)
-      .get()
-      .then(participant => {
-        console.log(participant);
+  const navigateToAttendanceConfirmation = useCallback(
+    participantId => {
+      navigate('AttendanceConfirmation', {
+        subEventId,
+        eventId,
+        participantId
       });
-  }, []);
-
-  const readQRCode = useCallback(
-    code => {
-      const [qrcodeEventId, qrcodeParticipantId] = code.split('|');
-
-      if (!validateEvent(qrcodeEventId)) return;
-      getParticipantData(qrcodeParticipantId);
-
-      setParticipants([
-        ...participants,
-        {
-          eventId: qrcodeEventId,
-          participantId: qrcodeParticipantId
-        }
-      ]);
     },
-    [participants]
+    [navigate]
   );
 
-  const handleSendCode = useCallback(async data => {
-    formRef.current.setErrors({});
-    const schema = Yup.object().shape({
-      subscription: Yup.string().required('Código obrigatório!')
-    });
-    await schema.validate(data);
+  const readQRCode = useCallback(code => {
+    const [qrcodeEventId, qrcodeParticipantId] = code.split('|');
 
+    if (!validateEvent(qrcodeEventId)) return;
+    navigateToAttendanceConfirmation(qrcodeParticipantId);
+  }, []);
+
+  const handleSendCode = useCallback(async data => {
+    try {
+      const schema = Yup.object().shape({
+        subscription: Yup.string()
+          .required('Código obrigatório!')
+          .min(3, 'Você deve informar pelo menos 3 caracteres!')
+      });
+      await schema.validate(data);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        Alert.alert('Erro!', `${err}`);
+        return;
+      }
+    }
     readQRCode(data.subscription);
   }, []);
 

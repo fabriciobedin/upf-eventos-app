@@ -33,7 +33,7 @@ const SignUp = () => {
 
   const handleSignUp = useCallback(async data => {
     try {
-      formRef.current?.setErrors({});
+      formRef.current.setErrors({});
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome obrigatório!'),
         email: Yup.string()
@@ -56,7 +56,7 @@ const SignUp = () => {
       // navigation.navigate('signin');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        formRef.current?.setErrors(getValidationErrors(err));
+        formRef.current.setErrors(getValidationErrors(err));
         return;
       }
       Alert.alert(
