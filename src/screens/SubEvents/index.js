@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
 
 import {
-  Header,
   BackButton,
   HeaderTitle,
   SubEventsList,
@@ -17,6 +16,7 @@ import {
 
 import { useAuth } from '../../hooks/auth';
 import TextTitle from '../../components/TextTitle';
+import Header from '../../components/Header';
 
 const SubEvents = () => {
   const { user } = useAuth();

@@ -12,7 +12,6 @@ import firestore from '@react-native-firebase/firestore';
 import * as Yup from 'yup';
 
 import {
-  Header,
   Container,
   BackButton,
   HeaderTitle,
@@ -20,6 +19,7 @@ import {
   FormContainer
 } from './styles';
 import InputWithButton from '../../components/InputWithButton';
+import Header from '../../components/Header';
 
 const CodeScanner = () => {
   const { navigate, goBack } = useNavigation();

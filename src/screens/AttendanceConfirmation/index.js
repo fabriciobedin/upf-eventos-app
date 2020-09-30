@@ -10,8 +10,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
 import * as Yup from 'yup';
 
-import { Header, Container, BackButton, HeaderTitle } from './styles';
+import { BackButton, HeaderTitle } from './styles';
 import TextTitle from '../../components/TextTitle';
+import Header from '../../components/Header';
 
 const AttendanceConfirmation = () => {
   // const { user } = useAuth();
@@ -56,18 +57,9 @@ const AttendanceConfirmation = () => {
         </BackButton>
         <HeaderTitle>Confirmação de leitura</HeaderTitle>
       </Header>
-
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled>
-        <ScrollView
-          contentContainerStyle={{ flex: 1 }}
-          keyboardShouldPersistTaps="handled">
-          {/* <TextTitle>Confirmação de presença</TextTitle> */}
-          <Container></Container>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      {/* <Container> */}
+      <TextTitle>Confirmação de leitura</TextTitle>
+      {/* </Container> */}
     </>
   );
 };

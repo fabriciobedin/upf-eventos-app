@@ -1,8 +1,5 @@
 import styled from 'styled-components/native';
-import {
-  getStatusBarHeight,
-  getBottomSpace
-} from 'react-native-iphone-x-helper';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { Form } from '@unform/mobile';
 
 export const Container = styled.ScrollView.attrs({
@@ -10,16 +7,6 @@ export const Container = styled.ScrollView.attrs({
     paddingBottom: getBottomSpace()
   }
 })``;
-
-export const Header = styled.View`
-  padding: 24px;
-  padding-top: ${getStatusBarHeight() + 24}px;
-  background: #28262e;
-  justify-content: space-between;
-
-  flex-direction: row;
-  align-items: center;
-`;
 
 export const BackButton = styled.TouchableOpacity``;
 
