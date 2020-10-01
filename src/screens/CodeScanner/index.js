@@ -25,9 +25,13 @@ const CodeScanner = () => {
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
   const formRef = useRef(null);
-  const { subEventId, eventId, subEventTitle } = route.params;
-
-  const [participants, setParticipants] = useState([]);
+  const {
+    subEventId,
+    eventId,
+    subEventTitle,
+    startTime,
+    finishTime
+  } = route.params;
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -62,20 +66,21 @@ const CodeScanner = () => {
   }, []);
 
   const handleSendCode = useCallback(async data => {
-    try {
-      const schema = Yup.object().shape({
-        subscription: Yup.string()
-          .required('Código obrigatório!')
-          .min(3, 'Você deve informar pelo menos 3 caracteres!')
-      });
-      await schema.validate(data);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        Alert.alert('Erro!', `${err}`);
-        return;
-      }
-    }
-    readQRCode(data.subscription);
+    // try {
+    //   const schema = Yup.object().shape({
+    //     subscription: Yup.string()
+    //       .required('Código obrigatório!')
+    //       .min(3, 'Você deve informar pelo menos 3 caracteres!')
+    //   });
+    //   await schema.validate(data);
+    // } catch (err) {
+    //   if (err instanceof Yup.ValidationError) {
+    //     Alert.alert('Erro!', `${err}`);
+    //     return;
+    //   }
+    // }
+    // readQRCode(data.subscription);
+    readQRCode('A31c1w4ssPBlY8jmKpwT|3vW5xqmATvmtB4OirOfY');
   }, []);
 
   return (

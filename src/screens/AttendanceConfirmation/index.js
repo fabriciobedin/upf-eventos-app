@@ -1,25 +1,31 @@
-import React, { useCallback, useState, useRef } from 'react';
-import {
-  Alert,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform
-} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
-import * as Yup from 'yup';
 
-import { BackButton, HeaderTitle } from './styles';
-import TextTitle from '../../components/TextTitle';
+import {
+  BackButton,
+  HeaderTitle,
+  ParticipantInfoContainer,
+  ParticipantName,
+  ParticipantDocument,
+  ConfirmationContainer
+} from './styles';
 import Header from '../../components/Header';
+import TextTitle from '../../components/TextTitle';
+import Button from '../../components/Button';
+import ToggleButton from '../../components/ToggleButton';
 
 const AttendanceConfirmation = () => {
   // const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
-  const route = useRoute();
-  const formRef = useRef(null);
-  const { subEventId, eventId, participantId } = route.params;
+  const { subEventId, eventId, participantId } = useRoute().params;
+  const [test, setTest] = useState();
+  const printTest = useCallback(() => {
+    console.log(test);
+  }, [test]);
+  printTest();
 
   const [participants, setParticipants] = useState([]);
 
@@ -49,6 +55,35 @@ const AttendanceConfirmation = () => {
     ]);
   }, [participants]);
 
+  const getEntryTimeFromFirebase = useCallback(() => {
+    firestore()
+      .collection('eventos')
+      .doc(eventId)
+      .collection('subeventos')
+      .doc(subEventId)
+      .collection('participantes')
+      .doc('EMtm6kXX7ShRKF6rre6D')
+      .get({})
+      .then(horaEntrada => {
+        console.log(horaEntrada);
+      });
+  });
+
+  const confirmation = useCallback(() => {
+    getEntryTimeFromFirebase();
+    firestore()
+      .collection('eventos')
+      .doc(eventId)
+      .collection('subeventos')
+      .doc(subEventId)
+      .collection('participantes')
+      .doc('EMtm6kXX7ShRKF6rre6D')
+      .update({ horaSaida: new Date() })
+      .then(horaSaida => {
+        console.log(horaSaida);
+      });
+  }, []);
+
   return (
     <>
       <Header>
@@ -57,9 +92,17 @@ const AttendanceConfirmation = () => {
         </BackButton>
         <HeaderTitle>Confirmação de leitura</HeaderTitle>
       </Header>
-      {/* <Container> */}
-      <TextTitle>Confirmação de leitura</TextTitle>
-      {/* </Container> */}
+      <ParticipantInfoContainer>
+        <TextTitle>Dados do participante</TextTitle>
+        <ParticipantName>Fabricio Bedin</ParticipantName>
+        <ParticipantDocument>025.122.810-00</ParticipantDocument>
+        <ToggleButton type="in" status={setTest}>
+          Entrada|Saída
+        </ToggleButton>
+        <ConfirmationContainer>
+          <Button onPress={confirmation}>Confirmar</Button>
+        </ConfirmationContainer>
+      </ParticipantInfoContainer>
     </>
   );
 };

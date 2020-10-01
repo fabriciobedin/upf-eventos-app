@@ -34,11 +34,13 @@ const SubEvents = () => {
   }, [goBack]);
 
   const navigateToCodeScanner = useCallback(
-    (subEventId, subEventTitle) => {
+    (subEventId, subEventTitle, startTime, finishTime) => {
       navigate('CodeScanner', {
         subEventId,
         eventId,
-        subEventTitle
+        subEventTitle,
+        startTime,
+        finishTime
       });
     },
     [navigate]
@@ -87,7 +89,14 @@ const SubEvents = () => {
         ListHeaderComponent={<TextTitle>SubEventos</TextTitle>}
         renderItem={({ item: subEvent }) => (
           <SubEventContainer
-            onPress={() => navigateToCodeScanner(subEvent.id, subEvent.titulo)}>
+            onPress={() =>
+              navigateToCodeScanner(
+                subEvent.id,
+                subEvent.titulo,
+                subEvent.horaInicial,
+                subEvent.horaFinal
+              )
+            }>
             <SubEventInfo>
               <SubEventInfoTitle>{subEvent.titulo}</SubEventInfoTitle>
               <SubEventInfoView>
