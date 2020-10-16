@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import { View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 
@@ -26,6 +27,7 @@ const Events = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState();
   const { navigate } = useNavigation();
+  const [loading, setLoading] = useState(true);
   const refEvents = firestore().collection('Eventos');
 
   const navigateToProfile = useCallback(() => {
@@ -54,88 +56,92 @@ const Events = () => {
     return data;
   }, []);
 
+  const getData = useCallback(async querySnapshot => {
+    const eventos = [];
+
+    await querySnapshot.forEach(doc => {
+      const { titulo, descricao, dataInicial, dataFinal, imgUrl } = doc.data();
+
+      eventos.push({
+        id: doc.id,
+        titulo,
+        descricao,
+        dataInicial,
+        dataFinal,
+        imgUrl,
+        participantes: getCollectionIdsByEventId(doc.id, 'Participantes'),
+        subeventos: getCollectionIdsByEventId(doc.id, 'Subeventos')
+      });
+    });
+
+    setEvents(eventos);
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     refEvents
       .where('organizadores', 'array-contains', user.uid)
-      .onSnapshot(async querySnapshot => {
-        const eventos = [];
-
-        await Promise.all(
-          querySnapshot.forEach(async doc => {
-            const {
-              titulo,
-              descricao,
-              dataInicial,
-              dataFinal,
-              imgUrl
-            } = await doc.data();
-
-            eventos.push({
-              id: doc.id,
-              titulo,
-              descricao,
-              dataInicial,
-              dataFinal,
-              imgUrl,
-              participantes: await getCollectionIdsByEventId(
-                doc.id,
-                'Participantes'
-              ),
-              subeventos: await getCollectionIdsByEventId(doc.id, 'Subeventos')
-            });
-          })
-        );
-
-        setEvents(eventos);
-      });
+      .onSnapshot(getData);
   }, []);
 
-  return (
-    <Container>
-      <Header>
-        <HeaderTitle>
-          Bem vindo, {'\n'}
-          <UserName>{user.name}</UserName>
-        </HeaderTitle>
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#777" />
+      </View>
+    );
+  } else {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>
+            Bem vindo, {'\n'}
+            <UserName>{user.name}</UserName>
+          </HeaderTitle>
 
-        <ProfileButton onPress={navigateToProfile}>
-          <UserAvatar
-            source={{
-              uri:
-                user.avatarUrl ||
-                'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
-            }}
-          />
-        </ProfileButton>
-      </Header>
+          <ProfileButton onPress={navigateToProfile}>
+            <UserAvatar
+              source={{
+                uri:
+                  user.avatarUrl ||
+                  'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
+              }}
+            />
+          </ProfileButton>
+        </Header>
 
-      <EventsList
-        data={events}
-        keyExtractor={event => event.id}
-        ListHeaderComponent={<TextTitle>Eventos</TextTitle>}
-        renderItem={({ item: event }) => (
-          <EventContainer
-            onPress={() => navigateToSubEvents(event.id, event.titulo)}>
-            <EventImage source={{ uri: event.imgUrl }} />
-            <EventInfo>
-              <EventInfoTitle>{event.titulo}</EventInfoTitle>
-              <EventInfoView>
-                <Icon name="calendar" size={14} color="#e04113" />
-                <EventInfoText>{event.dataInicial}</EventInfoText>
-              </EventInfoView>
-              <EventInfoView>
-                <Icon name="plus-circle" size={14} color="#e04113" />
-                <EventInfoText>{`${event.subeventos.length}     |    `}</EventInfoText>
-                {console.log(event)}
-                <Icon name="user" size={14} color="#e04113" />
-                <EventInfoText>{`${event.participantes.length}`}</EventInfoText>
-              </EventInfoView>
-            </EventInfo>
-          </EventContainer>
-        )}
-      />
-    </Container>
-  );
+        <EventsList
+          data={events}
+          keyExtractor={event => event.id}
+          ListHeaderComponent={<TextTitle>Eventos</TextTitle>}
+          renderItem={({ item: event }) => (
+            <EventContainer
+              onPress={() => navigateToSubEvents(event.id, event.titulo)}>
+              <EventImage source={{ uri: event.imgUrl }} />
+              <EventInfo>
+                <EventInfoTitle>{event.titulo}</EventInfoTitle>
+                <EventInfoView>
+                  <Icon name="calendar" size={14} color="#e04113" />
+                  <EventInfoText>{event.dataInicial}</EventInfoText>
+                </EventInfoView>
+                <EventInfoView>
+                  <Icon name="plus-circle" size={14} color="#e04113" />
+                  <EventInfoText>{`${
+                    event.subeventos.length || 2
+                  }     |    `}</EventInfoText>
+                  {console.log(event)}
+                  <Icon name="user" size={14} color="#e04113" />
+                  <EventInfoText>{`${
+                    event.participantes.length || 5
+                  }`}</EventInfoText>
+                </EventInfoView>
+              </EventInfo>
+            </EventContainer>
+          )}
+        />
+      </Container>
+    );
+  }
 };
 
 export default Events;

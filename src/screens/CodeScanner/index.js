@@ -25,13 +25,7 @@ const CodeScanner = () => {
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
   const formRef = useRef(null);
-  const {
-    subEventId,
-    eventId,
-    subEventTitle,
-    startTime,
-    finishTime
-  } = route.params;
+  const { subEventId, eventId } = route.params;
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -80,7 +74,8 @@ const CodeScanner = () => {
     //   }
     // }
     // readQRCode(data.subscription);
-    readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
+    // readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
+    readQRCode('0wXiTC6pzoC4zvKTh82W|fOiw9GwQGMhCF5aVswUr');
   }, []);
 
   return (
