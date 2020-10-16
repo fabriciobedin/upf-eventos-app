@@ -80,7 +80,7 @@ const CodeScanner = () => {
     //   }
     // }
     // readQRCode(data.subscription);
-    readQRCode('A31c1w4ssPBlY8jmKpwT|3vW5xqmATvmtB4OirOfY');
+    readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
   }, []);
 
   return (

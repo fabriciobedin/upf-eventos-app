@@ -25,9 +25,9 @@ const SubEvents = () => {
   const { eventId, eventTitle } = route.params;
   const [subEvents, setSubEvents] = useState([]);
   const refSubEvent = firestore()
-    .collection('eventos')
+    .collection('Eventos')
     .doc(eventId)
-    .collection('subeventos');
+    .collection('Subeventos');
 
   const navigateBack = useCallback(() => {
     goBack();

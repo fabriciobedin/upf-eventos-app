@@ -26,7 +26,7 @@ const Events = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState();
   const { navigate } = useNavigation();
-  const refEvents = firestore().collection('eventos');
+  const refEvents = firestore().collection('Eventos');
 
   const navigateToProfile = useCallback(() => {
     navigate('Profile');
@@ -39,34 +39,55 @@ const Events = () => {
     [navigate]
   );
 
+  const getCollectionIdsByEventId = useCallback(async (eventId, collection) => {
+    let data = [];
+    await refEvents
+      .doc(eventId)
+      .collection(collection)
+      .get()
+      .then(dataCollection =>
+        dataCollection.forEach(dataFirestore => {
+          data.push(dataFirestore.id);
+        })
+      );
+    console.log(collection, data);
+    return data;
+  }, []);
+
   useEffect(() => {
-    return refEvents.onSnapshot(querySnapshot => {
-      const eventos = [];
-      querySnapshot.forEach(doc => {
-        const {
-          titulo,
-          descricao,
-          dataInicial,
-          dataFinal,
-          codigo,
-          imgLink
-        } = doc.data();
+    refEvents
+      .where('organizadores', 'array-contains', user.uid)
+      .onSnapshot(async querySnapshot => {
+        const eventos = [];
 
-        eventos.push({
-          id: doc.id,
-          titulo,
-          descricao,
-          dataInicial,
-          dataFinal,
-          codigo,
-          imgLink,
-          participantes: 10,
-          subeventos: 2
-        });
+        await Promise.all(
+          querySnapshot.forEach(async doc => {
+            const {
+              titulo,
+              descricao,
+              dataInicial,
+              dataFinal,
+              imgUrl
+            } = await doc.data();
+
+            eventos.push({
+              id: doc.id,
+              titulo,
+              descricao,
+              dataInicial,
+              dataFinal,
+              imgUrl,
+              participantes: await getCollectionIdsByEventId(
+                doc.id,
+                'Participantes'
+              ),
+              subeventos: await getCollectionIdsByEventId(doc.id, 'Subeventos')
+            });
+          })
+        );
+
+        setEvents(eventos);
       });
-
-      setEvents(eventos);
-    });
   }, []);
 
   return (
@@ -95,7 +116,7 @@ const Events = () => {
         renderItem={({ item: event }) => (
           <EventContainer
             onPress={() => navigateToSubEvents(event.id, event.titulo)}>
-            <EventImage source={{ uri: event.imgLink }} />
+            <EventImage source={{ uri: event.imgUrl }} />
             <EventInfo>
               <EventInfoTitle>{event.titulo}</EventInfoTitle>
               <EventInfoView>
@@ -104,9 +125,10 @@ const Events = () => {
               </EventInfoView>
               <EventInfoView>
                 <Icon name="plus-circle" size={14} color="#e04113" />
-                <EventInfoText>{`${event.subeventos}     |    `}</EventInfoText>
+                <EventInfoText>{`${event.subeventos.length}     |    `}</EventInfoText>
+                {console.log(event)}
                 <Icon name="user" size={14} color="#e04113" />
-                <EventInfoText>{`${event.participantes}`}</EventInfoText>
+                <EventInfoText>{`${event.participantes.length}`}</EventInfoText>
               </EventInfoView>
             </EventInfo>
           </EventContainer>
