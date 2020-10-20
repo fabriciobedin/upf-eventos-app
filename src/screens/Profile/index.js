@@ -9,6 +9,9 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
+import ImagePicker from 'react-native-image-picker';
+// import { utils } from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -25,18 +28,63 @@ import {
 import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../hooks/auth';
 
-const SignUp = () => {
+const Profile = () => {
   const formRef = useRef(null);
   const emailInputRef = useRef(null);
   const oldPasswordInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const confirmPasswordInputRef = useRef(null);
+
   const { goBack } = useNavigation();
   const { signOut, user, updateUser } = useAuth();
+
+  const storageReference = storage().ref(`users/${user.uid}/avatar.png`);
 
   const navigateBack = useCallback(() => {
     goBack();
   }, [goBack]);
+
+  const sendToStorage = useCallback(async url => {
+    const pathToFile = url;
+    await storageReference.putFile(pathToFile);
+  });
+
+  const getStorageUrl = useCallback(async () => {
+    return await storageReference.getDownloadURL();
+  });
+
+  const handleUpdateAvatar = useCallback(() => {
+    ImagePicker.showImagePicker(
+      {
+        title: 'Carregue uma imagem',
+        cancelButtonTitle: 'Cancelar',
+        takePhotoButtonTitle: 'Tirar foto',
+        chooseFromLibraryButtonTitle: 'Selecionar da galeria'
+      },
+      async response => {
+        if (response.didCancel) {
+          return;
+        }
+
+        if (response.error) {
+          Alert.alert('Erro!', 'Por favor tente novamente.');
+          return;
+        }
+
+        await sendToStorage(response.uri);
+        const storageUrl = await getStorageUrl();
+
+        updateUser({
+          uid: user.uid,
+          name: user.name,
+          email: user.email,
+          avatarUrl: storageUrl
+        });
+
+        Alert.alert('Avatar alterado com sucesso!');
+      }
+    );
+  });
 
   const handleSaveProfile = useCallback(async data => {
     console.log(data);
@@ -110,7 +158,7 @@ const SignUp = () => {
               <Icon name="chevron-left" size={30} color={'#777'} />
             </BackButton>
 
-            <UserAvatarButton onPress={() => {}}>
+            <UserAvatarButton onPress={handleUpdateAvatar}>
               <UserAvatar
                 source={{
                   uri:
@@ -207,4 +255,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Profile;
