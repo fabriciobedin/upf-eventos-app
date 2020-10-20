@@ -56,7 +56,7 @@ const AttendanceConfirmation = () => {
         .doc(eventId)
         .collection('Subeventos')
         .doc(subEventId)
-        .collection('Participantes')
+        .collection('SubeventoParticipantes')
         .doc(participantId)
         .get({})
         .then(participant => {
@@ -91,7 +91,7 @@ const AttendanceConfirmation = () => {
       .doc(eventId)
       .collection('Subeventos')
       .doc(subEventId)
-      .collection('Participantes')
+      .collection('SubeventoParticipantes')
       .doc(participantId);
 
     if (participantCreated) {

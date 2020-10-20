@@ -112,20 +112,23 @@ const SignIn = () => {
               </Button>
             </FormContainer>
 
-            <ForgotPassword onPress={() => {}}>
+            <ForgotPassword
+              onPress={() => {
+                navigation.navigate('ResetPassword');
+              }}>
               <ForgotPasswordText>Esqueci minha senha :(</ForgotPasswordText>
             </ForgotPassword>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <CreateAccount
+      {/* <CreateAccount
         onPress={() => {
           navigation.navigate('SignUp');
         }}>
         <Icon name="log-in" size={20} color="#ed6707" />
         <CreateAccountText>Criar conta</CreateAccountText>
-      </CreateAccount>
+      </CreateAccount> */}
     </>
   );
 };

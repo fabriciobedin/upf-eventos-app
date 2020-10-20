@@ -39,23 +39,20 @@ const SignUp = () => {
   }, [goBack]);
 
   const handleSaveProfile = useCallback(async data => {
+    console.log(data);
     try {
       formRef.current?.setErrors({});
 
       const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('Digite um e-mail válido'),
         oldPassword: Yup.string(),
         password: Yup.string().when('oldPassword', {
-          is: val => !!val.length,
+          is: val => val,
           then: Yup.string().required('Campo obrigatório'),
           otherwise: Yup.string()
         }),
         confirmPassword: Yup.string()
           .when('oldPassword', {
-            is: val => !!val.length,
+            is: val => val,
             then: Yup.string().required('Campo obrigatório'),
             otherwise: Yup.string()
           })
@@ -69,15 +66,14 @@ const SignUp = () => {
       const { name, email, oldPassword, password, confirmPassword } = data;
       const formData = {
         uid: user.uid,
-        name,
-        email,
+        name: name || user.name,
+        email: email || user.email,
         avatarUrl: user.avatarUrl,
         ...(oldPassword ? { oldPassword, password, confirmPassword } : {})
       };
 
-      updateUser(formData);
-
       console.log(formData);
+      updateUser(formData);
 
       Alert.alert(
         'Perfil atualizado com sucesso!',

@@ -146,34 +146,98 @@ const AuthProvider = ({ children }) => {
       });
   }, []);
 
-  const updateUser = useCallback(({ uid, name, email, avatarUrl }) => {
+  const resetPassword = useCallback(email => {
     setLoading(true);
-    firestore()
-      .collection('Users')
-      .doc(uid)
-      .set({ name, email, avatarUrl })
-      .then(async () => {
-        setUser({ name, email, avatarUrl });
-        await AsyncStorage.setItem(
-          '@upf-eventos:user',
-          JSON.stringify({ name, email, avatarUrl })
-        );
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
         setLoading(false);
-        console.log(`User ${name} updated`);
+        Alert.alert(
+          'Link enviado!',
+          'Foi enviado um link de redefinição da senha para seu email'
+        );
+        console.log('Link to change the password sent');
       })
       .catch(err => {
+        setLoading(false);
         console.log(err);
         Alert.alert(
-          'Erro ao cadastrar usuário!',
-          'Por favor, verifique as informações inseridas e tente novamente em alguns minutos.'
+          'Erro!',
+          'Não foi possível redefinir a senha, por favor verifique se digitou o email corretamente.'
         );
-        setLoading(false);
+      });
+  }, []);
+
+  const reauthenticate = useCallback(currentPassword => {
+    const currentUser = auth().currentUser;
+    const cred = auth.EmailAuthProvider.credential(
+      currentUser.email,
+      currentPassword
+    );
+    return currentUser.reauthenticateWithCredential(cred);
+  });
+
+  const changePassword = useCallback((currentPassword, newPassword) => {
+    reauthenticate(currentPassword)
+      .then(() => {
+        const currentUser = auth().currentUser;
+        currentUser
+          .updatePassword(newPassword)
+          .then(() => {
+            console.log('Password updated!');
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
       });
   });
 
+  const updateUser = useCallback(
+    ({ uid, name, email, avatarUrl, oldPassword, password }) => {
+      setLoading(true);
+      if (name && avatarUrl) {
+        firestore()
+          .collection('Users')
+          .doc(uid)
+          .update({ name, avatarUrl })
+          .then(async () => {
+            setUser({ uid, name, email, avatarUrl });
+            await AsyncStorage.setItem(
+              '@upf-eventos:user',
+              JSON.stringify({ uid, name, email, avatarUrl })
+            );
+            setLoading(false);
+            console.log(`User ${name} updated`);
+          })
+          .catch(err => {
+            console.log(err);
+            Alert.alert(
+              'Erro ao atualizar usuário!',
+              'Por favor, verifique as informações inseridas e tente novamente em alguns minutos.'
+            );
+            setLoading(false);
+          });
+      }
+      if (oldPassword && password) {
+        changePassword(oldPassword, password);
+      }
+    }
+  );
+
   return (
     <AuthContext.Provider
-      value={{ user, loading, signIn, signUp, signOut, updateUser }}>
+      value={{
+        user,
+        loading,
+        signIn,
+        signUp,
+        signOut,
+        updateUser,
+        resetPassword
+      }}>
       {children}
     </AuthContext.Provider>
   );

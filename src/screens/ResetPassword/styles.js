@@ -17,17 +17,7 @@ export const Title = styled.Text`
   margin: 30px 0 30px;
 `;
 
-export const ForgotPassword = styled.TouchableOpacity`
-  margin-top: 30px;
-`;
-
-export const ForgotPasswordText = styled.Text`
-  color: #777;
-  font-size: 16px;
-  font-family: 'RobotoSlab-Regular';
-`;
-
-export const CreateAccount = styled.TouchableOpacity`
+export const BackToSignIn = styled.TouchableOpacity`
   position: absolute;
   left: 0;
   right: 0;
@@ -37,13 +27,13 @@ export const CreateAccount = styled.TouchableOpacity`
   border-color: #aaa;
   padding: 16px 0 ${16 + getBottomSpace() / 2}px;
 
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
 `;
 
-export const CreateAccountText = styled.Text`
-  color: #ed6707;
+export const BackToSignInText = styled.Text`
+  color: #777;
   font-size: 18px;
   font-family: 'RobotoSlab-Regular';
   margin-left: 15px;

@@ -74,8 +74,8 @@ const CodeScanner = () => {
     //   }
     // }
     // readQRCode(data.subscription);
-    // readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
-    readQRCode('0wXiTC6pzoC4zvKTh82W|fOiw9GwQGMhCF5aVswUr');
+    readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
+    // readQRCode('0wXiTC6pzoC4zvKTh82W|fOiw9GwQGMhCF5aVswUr');
   }, []);
 
   return (
