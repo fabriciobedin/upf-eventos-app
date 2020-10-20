@@ -29,6 +29,10 @@ const Events = () => {
   const { navigate } = useNavigation();
   const [loading, setLoading] = useState(true);
   const refEvents = firestore().collection('Eventos');
+  const EVENT_URL_DEFAULT =
+    'https://firebasestorage.googleapis.com/v0/b/upf-eventos.appspot.com/o/assets%2Fdefault_event_image.png?alt=media&token=079c91ec-40e0-4a86-a9c4-f177b7bb2508';
+  const AVATAR_URL_DEFAULT =
+    'https://firebasestorage.googleapis.com/v0/b/upf-eventos.appspot.com/o/assets%2Fdefault_avatar.png?alt=media&token=fda493df-ce4f-4c71-bea6-b310c8b524ad';
 
   const navigateToProfile = useCallback(() => {
     navigate('Profile');
@@ -52,7 +56,6 @@ const Events = () => {
           data.push(dataFirestore.id);
         })
       );
-    console.log(collection, data);
     return data;
   }, []);
 
@@ -79,9 +82,14 @@ const Events = () => {
   }, []);
 
   useEffect(() => {
-    refEvents
-      .where('organizadores', 'array-contains', user.uid)
-      .onSnapshot(getData);
+    if (user.nivelAcesso === '1') {
+      refEvents.onSnapshot(getData);
+    }
+    if (user.nivelAcesso === '2') {
+      refEvents
+        .where('organizadores', 'array-contains', user.uid)
+        .onSnapshot(getData);
+    }
   }, []);
 
   if (loading) {
@@ -102,9 +110,7 @@ const Events = () => {
           <ProfileButton onPress={navigateToProfile}>
             <UserAvatar
               source={{
-                uri:
-                  user.avatarUrl ||
-                  'https://avatars3.githubusercontent.com/u/50773681?s=460&v=4'
+                uri: user.avatarUrl || AVATAR_URL_DEFAULT
               }}
             />
           </ProfileButton>
@@ -117,7 +123,11 @@ const Events = () => {
           renderItem={({ item: event }) => (
             <EventContainer
               onPress={() => navigateToSubEvents(event.id, event.titulo)}>
-              <EventImage source={{ uri: event.imgUrl }} />
+              <EventImage
+                source={{
+                  uri: event.imgUrl || EVENT_URL_DEFAULT
+                }}
+              />
               <EventInfo>
                 <EventInfoTitle>{event.titulo}</EventInfoTitle>
                 <EventInfoView>
@@ -129,7 +139,6 @@ const Events = () => {
                   <EventInfoText>{`${
                     event.subeventos.length || 2
                   }     |    `}</EventInfoText>
-                  {console.log(event)}
                   <Icon name="user" size={14} color="#e04113" />
                   <EventInfoText>{`${
                     event.participantes.length || 5

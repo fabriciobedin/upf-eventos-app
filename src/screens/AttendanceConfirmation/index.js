@@ -23,7 +23,19 @@ const AttendanceConfirmation = () => {
   const [action, setAction] = useState();
   const [participantData, setParticipantData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [participantCreated, setParticipantCreated] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        Alert.alert(
+          'Erro na conexão',
+          'Não foi possível buscar os dados do participante, mas fique tranquilo a presença será confirmada da mesma forma.'
+        );
+      }
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     async function getParticipantData() {
@@ -40,7 +52,7 @@ const AttendanceConfirmation = () => {
               documento:
                 participant._data.documento || participant._data.idEstrangeiro
             });
-            console.log(participant._data);
+            console.log('Participant data received!');
           } else {
             console.log('Error geting participant data');
           }
@@ -61,13 +73,10 @@ const AttendanceConfirmation = () => {
         .get({})
         .then(participant => {
           if (participant.exists && !!participant._data.horaEntrada) {
-            setParticipantCreated(true);
             setAction('out');
           } else {
-            setParticipantCreated(false);
             setAction('in');
           }
-          console.log('action', action);
         });
       setLoading(false);
     }
@@ -94,45 +103,27 @@ const AttendanceConfirmation = () => {
       .collection('SubeventoParticipantes')
       .doc(participantId);
 
-    if (participantCreated) {
-      participantRef
-        .update(
+    participantRef
+      .update(
+        action === 'in'
+          ? { horaEntrada: new Date() }
+          : { horaSaida: new Date() }
+      )
+      .then(() => {
+        console.log(
           action === 'in'
-            ? { horaEntrada: new Date() }
-            : { horaSaida: new Date() }
-        )
-        .then(() => {
-          console.log(
-            action === 'in'
-              ? 'Horário de entrada atualizado!'
-              : 'Horário de saída atualizado!'
-          );
-          navigateToCodeScanner();
-        })
-        .catch(err => {
-          console.log(err);
-          Alert('Erro', 'Erro na confirmação, por favor tente novamente!');
-        });
-    } else {
-      participantRef
-        .set(
-          action === 'in'
-            ? { horaEntrada: new Date() }
-            : { horaSaida: new Date() }
-        )
-        .then(() => {
-          console.log(
-            action === 'in'
-              ? 'Horário de entrada criado!'
-              : 'Horário de saída criado!'
-          );
-          navigateToCodeScanner();
-        })
-        .catch(err => {
-          console.log(err);
-          Alert('Erro', 'Erro na confirmação, por favor tente novamente!');
-        });
-    }
+            ? 'Horário de entrada atualizado!'
+            : 'Horário de saída atualizado!'
+        );
+        navigateToCodeScanner();
+      })
+      .catch(err => {
+        console.log(err);
+        Alert(
+          'Erro',
+          'Erro na confirmação, por favor verifique se o usuário está inscrito.'
+        );
+      });
   }, [action]);
 
   if (loading) {

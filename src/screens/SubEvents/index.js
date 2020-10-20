@@ -14,12 +14,10 @@ import {
   SubEventInfoText
 } from './styles';
 
-import { useAuth } from '../../hooks/auth';
 import TextTitle from '../../components/TextTitle';
 import Header from '../../components/Header';
 
 const SubEvents = () => {
-  const { user } = useAuth();
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
   const { eventId, eventTitle } = route.params;
@@ -48,8 +46,6 @@ const SubEvents = () => {
 
   useEffect(() => {
     return refSubEvent.onSnapshot(querySnapshot => {
-      console.log(querySnapshot);
-
       const subEventsFirestore = [];
       querySnapshot.forEach(doc => {
         const {

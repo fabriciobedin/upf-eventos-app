@@ -38,12 +38,12 @@ const AuthProvider = ({ children }) => {
           .doc(res.user.uid)
           .get()
           .then(async FbUser => {
-            console.log(FbUser);
             setUser({
               uid: res.user.uid,
               name: FbUser._data.name,
               email: FbUser._data.email,
-              avatarUrl: FbUser._data.avatarUrl
+              avatarUrl: FbUser._data.avatarUrl,
+              nivelAcesso: FbUser._data.nivelAcesso
             });
             setLoading(false);
             await AsyncStorage.setItem(
@@ -52,7 +52,8 @@ const AuthProvider = ({ children }) => {
                 uid: res.user.uid,
                 name: FbUser._data.name,
                 email: FbUser._data.email,
-                avatarUrl: FbUser._data.avatarUrl
+                avatarUrl: FbUser._data.avatarUrl,
+                nivelAcesso: FbUser._data.nivelAcesso
               })
             );
           });
@@ -82,7 +83,6 @@ const AuthProvider = ({ children }) => {
               .doc(res.user.uid)
               .get()
               .then(async FbUser => {
-                console.log(FbUser);
                 setUser({
                   uid: res.user.uid,
                   name: FbUser._data.name,
@@ -196,7 +196,7 @@ const AuthProvider = ({ children }) => {
   });
 
   const updateUser = useCallback(
-    ({ uid, name, email, avatarUrl, oldPassword, password }) => {
+    ({ uid, name, email, avatarUrl, oldPassword, password, nivelAcesso }) => {
       setLoading(true);
       if (name && avatarUrl) {
         firestore()
@@ -204,10 +204,10 @@ const AuthProvider = ({ children }) => {
           .doc(uid)
           .update({ name, avatarUrl })
           .then(async () => {
-            setUser({ uid, name, email, avatarUrl });
+            setUser({ uid, name, email, avatarUrl, nivelAcesso });
             await AsyncStorage.setItem(
               '@upf-eventos:user',
-              JSON.stringify({ uid, name, email, avatarUrl })
+              JSON.stringify({ uid, name, email, avatarUrl, nivelAcesso })
             );
             setLoading(false);
             console.log(`User ${name} updated`);

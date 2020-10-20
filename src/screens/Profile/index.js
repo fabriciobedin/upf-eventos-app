@@ -10,7 +10,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 import ImagePicker from 'react-native-image-picker';
-// import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 
 import Input from '../../components/Input';
@@ -78,6 +77,7 @@ const Profile = () => {
           uid: user.uid,
           name: user.name,
           email: user.email,
+          nivelAcesso: user.nivelAcesso,
           avatarUrl: storageUrl
         });
 
@@ -87,7 +87,6 @@ const Profile = () => {
   });
 
   const handleSaveProfile = useCallback(async data => {
-    console.log(data);
     try {
       formRef.current?.setErrors({});
 
@@ -117,10 +116,10 @@ const Profile = () => {
         name: name || user.name,
         email: email || user.email,
         avatarUrl: user.avatarUrl,
+        nivelAcesso: user.nivelAcesso,
         ...(oldPassword ? { oldPassword, password, confirmPassword } : {})
       };
 
-      console.log(formData);
       updateUser(formData);
 
       Alert.alert(
