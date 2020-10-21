@@ -31,6 +31,10 @@ const SubEvents = () => {
     goBack();
   }, [goBack]);
 
+  const formatDate = useCallback(date => {
+    return new Date(date).toLocaleDateString('pt-BR');
+  }, []);
+
   const navigateToCodeScanner = useCallback(
     (subEventId, subEventTitle, startTime, finishTime) => {
       navigate('CodeScanner', {
@@ -59,7 +63,7 @@ const SubEvents = () => {
         subEventsFirestore.push({
           id: doc.id,
           titulo,
-          dataInicial,
+          dataInicial: formatDate(dataInicial),
           horaInicial,
           horaFinal,
           palestrante

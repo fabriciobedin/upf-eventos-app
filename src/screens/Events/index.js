@@ -50,6 +50,7 @@ const Events = () => {
     await refEvents
       .doc(eventId)
       .collection(collection)
+      .orderBy('dataInicial', 'desc')
       .get()
       .then(dataCollection =>
         dataCollection.forEach(dataFirestore => {
@@ -59,23 +60,38 @@ const Events = () => {
     return data;
   }, []);
 
+  const formatDate = useCallback(date => {
+    return new Date(date).toLocaleDateString('pt-BR');
+  }, []);
+
   const getData = useCallback(async querySnapshot => {
     const eventos = [];
 
-    await querySnapshot.forEach(doc => {
-      const { titulo, descricao, dataInicial, dataFinal, imgUrl } = doc.data();
+    await Promise.all(
+      querySnapshot.docs.map(async doc => {
+        const {
+          titulo,
+          descricao,
+          dataInicial,
+          dataFinal,
+          imgUrl
+        } = await doc.data();
 
-      eventos.push({
-        id: doc.id,
-        titulo,
-        descricao,
-        dataInicial,
-        dataFinal,
-        imgUrl,
-        participantes: getCollectionIdsByEventId(doc.id, 'Participantes'),
-        subeventos: getCollectionIdsByEventId(doc.id, 'Subeventos')
-      });
-    });
+        await eventos.push({
+          id: doc.id,
+          titulo,
+          descricao,
+          dataInicial: await formatDate(dataInicial),
+          dataFinal: await formatDate(dataFinal),
+          imgUrl,
+          participantes: await getCollectionIdsByEventId(
+            doc.id,
+            'Participantes'
+          ),
+          subeventos: await getCollectionIdsByEventId(doc.id, 'Subeventos')
+        });
+      })
+    );
 
     setEvents(eventos);
     setLoading(false);
@@ -136,13 +152,9 @@ const Events = () => {
                 </EventInfoView>
                 <EventInfoView>
                   <Icon name="plus-circle" size={14} color="#e04113" />
-                  <EventInfoText>{`${
-                    event.subeventos.length || 2
-                  }     |    `}</EventInfoText>
+                  <EventInfoText>{`${event.subeventos.length}     |    `}</EventInfoText>
                   <Icon name="user" size={14} color="#e04113" />
-                  <EventInfoText>{`${
-                    event.participantes.length || 5
-                  }`}</EventInfoText>
+                  <EventInfoText>{`${event.participantes.length}`}</EventInfoText>
                 </EventInfoView>
               </EventInfo>
             </EventContainer>
