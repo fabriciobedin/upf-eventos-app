@@ -25,19 +25,8 @@ const AttendanceConfirmation = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        Alert.alert(
-          'Erro na conexão',
-          'Não foi possível buscar os dados do participante, mas fique tranquilo a presença será confirmada da mesma forma.'
-        );
-      }
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
+    console.log('EventoID', eventId);
+    console.log('ParticipanteID', participantId);
     async function getParticipantData() {
       await firestore()
         .collection('Eventos')
@@ -46,13 +35,13 @@ const AttendanceConfirmation = () => {
         .doc(participantId)
         .get()
         .then(participant => {
+          console.log(participant.id);
+          const { nome, documento, idEstrangeiro } = participant.data();
           if (participant.exists) {
             setParticipantData({
-              nome: participant._data.nome,
-              documento:
-                participant._data.documento || participant._data.idEstrangeiro
+              nome,
+              documento: documento || idEstrangeiro
             });
-            console.log('Participant data received!');
           } else {
             console.log('Error geting participant data');
           }
@@ -62,6 +51,7 @@ const AttendanceConfirmation = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     async function getEntryTimeFromFirebase() {
       await firestore()
         .collection('Eventos')
@@ -81,6 +71,19 @@ const AttendanceConfirmation = () => {
       setLoading(false);
     }
     getEntryTimeFromFirebase();
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        Alert.alert(
+          'Erro na conexão',
+          'Não foi possível buscar os dados do participante, mas fique tranquilo a presença será confirmada da mesma forma.'
+        );
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   const navigateBack = useCallback(() => {

@@ -1,7 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   BackButton,
@@ -25,7 +27,8 @@ const SubEvents = () => {
   const refSubEvent = firestore()
     .collection('Eventos')
     .doc(eventId)
-    .collection('Subeventos');
+    .collection('Subeventos')
+    .orderBy('dataInicial');
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -48,30 +51,68 @@ const SubEvents = () => {
     [navigate]
   );
 
-  useEffect(() => {
-    return refSubEvent.onSnapshot(querySnapshot => {
-      const subEventsFirestore = [];
-      querySnapshot.forEach(doc => {
-        const {
-          titulo,
-          dataInicial,
-          horaInicial,
-          horaFinal,
-          palestrante
-        } = doc.data();
+  const getSubeventsParticipants = useCallback(async subeventId => {
+    let participants = [];
+    await firestore()
+      .collection('Eventos')
+      .doc(eventId)
+      .collection('Subeventos')
+      .doc(subeventId)
+      .collection('SubeventoParticipantes')
+      .get()
+      .then(participantsCollection =>
+        participantsCollection.forEach(participantsFirestore => {
+          participants.push(participantsFirestore.id);
+        })
+      );
+    console.log(participants);
+    return participants;
+  }, []);
 
-        subEventsFirestore.push({
-          id: doc.id,
-          titulo,
-          dataInicial: formatDate(dataInicial),
-          horaInicial,
-          horaFinal,
-          palestrante
-        });
-      });
+  const getSubeventsData = useCallback(async () => {
+    const subEventsFirestore = [];
+    refSubEvent.onSnapshot(async querySnapshot => {
+      await Promise.all(
+        querySnapshot.docs.map(async doc => {
+          const {
+            titulo,
+            dataInicial,
+            horaInicial,
+            horaFinal,
+            palestrante
+          } = doc.data();
+
+          await subEventsFirestore.push({
+            id: doc.id,
+            titulo,
+            dataInicial: await formatDate(dataInicial),
+            horaInicial,
+            horaFinal,
+            palestrante,
+            participantes: await getSubeventsParticipants(doc.id)
+          });
+        })
+      );
+
+      console.log(subEventsFirestore);
 
       setSubEvents(subEventsFirestore);
     });
+  }, []);
+
+  useEffect(() => {
+    getSubeventsData();
+  }, []);
+
+  useEffect(() => {
+    async function setLocalStorageParticipants() {
+      console.log('passed here!');
+      await AsyncStorage.setItem(
+        `@upf-eventos:${eventId}:subevents`,
+        JSON.stringify(subEvents)
+      );
+    }
+    setLocalStorageParticipants();
   }, []);
 
   return (
@@ -99,6 +140,23 @@ const SubEvents = () => {
             }>
             <SubEventInfo>
               <SubEventInfoTitle>{subEvent.titulo}</SubEventInfoTitle>
+              <SubEventInfoView>
+                <Icon name="user" size={14} color="#e04113" />
+                <SubEventInfoText>
+                  {subEvent.participantes.length}
+                </SubEventInfoText>
+                {subEvent.palestrante && (
+                  <>
+                    <SubEventInfoText>{`     |     `}</SubEventInfoText>
+                    <SimpleLineIcon
+                      name="graduation"
+                      size={14}
+                      color="#e04113"
+                    />
+                    <SubEventInfoText>{subEvent.palestrante}</SubEventInfoText>
+                  </>
+                )}
+              </SubEventInfoView>
               <SubEventInfoView>
                 <Icon name="calendar" size={14} color="#e04113" />
                 <SubEventInfoText>{`${subEvent.dataInicial}     |    `}</SubEventInfoText>

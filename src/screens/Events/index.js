@@ -45,19 +45,35 @@ const Events = () => {
     [navigate]
   );
 
-  const getCollectionIdsByEventId = useCallback(async (eventId, collection) => {
-    let data = [];
+  const getSubeventsByEventId = useCallback(async eventId => {
+    let subevents = [];
     await refEvents
       .doc(eventId)
-      .collection(collection)
-      .orderBy('dataInicial', 'desc')
+      .collection('Subeventos')
+      .orderBy('dataInicial')
       .get()
-      .then(dataCollection =>
-        dataCollection.forEach(dataFirestore => {
-          data.push(dataFirestore.id);
+      .then(subeventsCollection =>
+        subeventsCollection.forEach(subeventsFirestore => {
+          subevents.push(subeventsFirestore.id);
         })
       );
-    return data;
+    console.log(subevents);
+    return subevents;
+  }, []);
+
+  const getParticipantsByEventId = useCallback(async eventId => {
+    let participants = [];
+    await refEvents
+      .doc(eventId)
+      .collection('Participantes')
+      .get()
+      .then(participantsCollection =>
+        participantsCollection.forEach(participantsFirestore => {
+          participants.push(participantsFirestore.id);
+        })
+      );
+    console.log(participants);
+    return participants;
   }, []);
 
   const formatDate = useCallback(date => {
@@ -84,12 +100,11 @@ const Events = () => {
           dataInicial: await formatDate(dataInicial),
           dataFinal: await formatDate(dataFinal),
           imgUrl,
-          participantes: await getCollectionIdsByEventId(
-            doc.id,
-            'Participantes'
-          ),
-          subeventos: await getCollectionIdsByEventId(doc.id, 'Subeventos')
+          subeventos: await getSubeventsByEventId(doc.id),
+          participantes: await getParticipantsByEventId(doc.id)
         });
+
+        console.log(eventos);
       })
     );
 

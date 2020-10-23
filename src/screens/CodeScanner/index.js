@@ -60,21 +60,21 @@ const CodeScanner = () => {
   }, []);
 
   const handleSendCode = useCallback(async data => {
-    // try {
-    //   const schema = Yup.object().shape({
-    //     subscription: Yup.string()
-    //       .required('Código obrigatório!')
-    //       .min(3, 'Você deve informar pelo menos 3 caracteres!')
-    //   });
-    //   await schema.validate(data);
-    // } catch (err) {
-    //   if (err instanceof Yup.ValidationError) {
-    //     Alert.alert('Erro!', `${err}`);
-    //     return;
-    //   }
-    // }
-    // readQRCode(data.subscription);
-    readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
+    try {
+      const schema = Yup.object().shape({
+        subscription: Yup.string()
+          .required('Código obrigatório!')
+          .min(3, 'Você deve informar pelo menos 3 caracteres!')
+      });
+      await schema.validate(data);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        Alert.alert('Erro!', `${err}`);
+        return;
+      }
+    }
+    readQRCode(data.subscription);
+    // readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
     // readQRCode('0wXiTC6pzoC4zvKTh82W|fOiw9GwQGMhCF5aVswUr');
   }, []);
 
