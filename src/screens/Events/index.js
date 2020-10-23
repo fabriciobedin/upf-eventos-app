@@ -103,8 +103,6 @@ const Events = () => {
           subeventos: await getSubeventsByEventId(doc.id),
           participantes: await getParticipantsByEventId(doc.id)
         });
-
-        console.log(eventos);
       })
     );
 
