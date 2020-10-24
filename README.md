@@ -17,9 +17,9 @@ cd ios && pod install && cd ..      # to install ios dependencies
 yarn ios                            # to run the app in iOS
 ```
 
-## Configuração do Firebase
+## Firebase setup
 
-[Passos para configuração](https://www.notion.so/137576/Steps-to-configure-Firebase-d8c4815abc024404964d77fd3b4ac677)
+[Steps to configure](https://www.notion.so/137576/Steps-to-configure-Firebase-d8c4815abc024404964d77fd3b4ac677)
 
 ## Screens
 
