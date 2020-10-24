@@ -23,7 +23,7 @@ const SubEvents = () => {
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
   const { eventId, eventTitle } = route.params;
-  const [subEvents, setSubEvents] = useState([]);
+  const [subEvents, setSubEvents] = useState();
   const refSubEvent = firestore()
     .collection('Eventos')
     .doc(eventId)
@@ -79,6 +79,7 @@ const SubEvents = () => {
             dataInicial,
             horaInicial,
             horaFinal,
+            turno,
             palestrante
           } = doc.data();
 
@@ -89,6 +90,7 @@ const SubEvents = () => {
             horaInicial,
             horaFinal,
             palestrante,
+            turno,
             participantes: await getSubeventsParticipants(doc.id)
           });
         })
@@ -104,16 +106,16 @@ const SubEvents = () => {
     getSubeventsData();
   }, []);
 
-  useEffect(() => {
-    async function setLocalStorageParticipants() {
-      console.log('passed here!');
-      await AsyncStorage.setItem(
-        `@upf-eventos:${eventId}:subevents`,
-        JSON.stringify(subEvents)
-      );
-    }
-    setLocalStorageParticipants();
-  }, []);
+  // useEffect(() => {
+  //   async function setLocalStorageParticipants() {
+  //     console.log('passed here!');
+  //     await AsyncStorage.setItem(
+  //       `@upf-eventos:${eventId}:subevents`,
+  //       JSON.stringify(subEvents)
+  //     );
+  //   }
+  //   setLocalStorageParticipants();
+  // }, []);
 
   return (
     <>
@@ -161,7 +163,11 @@ const SubEvents = () => {
                 <Icon name="calendar" size={14} color="#e04113" />
                 <SubEventInfoText>{`${subEvent.dataInicial}     |    `}</SubEventInfoText>
                 <Icon name="clock" size={14} color="#e04113" />
-                <SubEventInfoText>{`${subEvent.horaInicial} - ${subEvent.horaFinal}`}</SubEventInfoText>
+                <SubEventInfoText>
+                  {!!subEvent.horaInicial && !!subEvent.horaFinal
+                    ? `${subEvent.horaInicial} - ${subEvent.horaFinal}`
+                    : subEvent.turno}
+                </SubEventInfoText>
               </SubEventInfoView>
             </SubEventInfo>
           </SubEventContainer>

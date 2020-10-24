@@ -160,14 +160,14 @@ const Events = () => {
               <EventInfo>
                 <EventInfoTitle>{event.titulo}</EventInfoTitle>
                 <EventInfoView>
-                  <Icon name="calendar" size={14} color="#e04113" />
-                  <EventInfoText>{event.dataInicial}</EventInfoText>
-                </EventInfoView>
-                <EventInfoView>
                   <Icon name="plus-circle" size={14} color="#e04113" />
                   <EventInfoText>{`${event.subeventos.length}     |    `}</EventInfoText>
                   <Icon name="user" size={14} color="#e04113" />
                   <EventInfoText>{`${event.participantes.length}`}</EventInfoText>
+                </EventInfoView>
+                <EventInfoView>
+                  <Icon name="calendar" size={14} color="#e04113" />
+                  <EventInfoText>{`${event.dataInicial}     |     ${event.dataFinal}`}</EventInfoText>
                 </EventInfoView>
               </EventInfo>
             </EventContainer>

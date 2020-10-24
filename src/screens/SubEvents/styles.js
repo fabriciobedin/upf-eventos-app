@@ -14,6 +14,7 @@ export const BackButton = styled.TouchableOpacity``;
 export const HeaderTitle = styled.Text`
   color: #f4ede8;
   font-size: 18px;
+  margin-left: 10px;
   font-family: 'RobotoSlab-Medium';
   line-height: 28px;
 `;
@@ -34,7 +35,7 @@ export const SubEventContainer = styled(RectButton)`
 
 export const SubEventInfo = styled.View`
   flex: 1;
-  /* margin-left: 20px; */
+  /* margin-left: 10px; */
 `;
 
 export const SubEventInfoTitle = styled.Text`
