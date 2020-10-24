@@ -100,6 +100,8 @@ const CodeScanner = () => {
               onRead={e => {
                 readQRCode(e.data);
               }}
+              reactivate={true}
+              reactivateTimeout={2000}
             />
             <InfoTitle>ou, digite o código abaixo</InfoTitle>
 

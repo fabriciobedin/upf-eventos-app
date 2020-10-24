@@ -14,7 +14,7 @@ export const Title = styled.Text`
   font-size: 24px;
   color: #000;
   font-family: 'RobotoSlab-Medium';
-  margin: 24px 0;
+  margin: 20px 0;
   align-self: center;
 `;
 
@@ -26,7 +26,7 @@ export const BackToSignIn = styled.TouchableOpacity`
   background: #eee;
   border-top-width: 1px;
   border-color: #aaa;
-  padding: 16px 0 ${16 + getBottomSpace() / 2}px;
+  padding: 14px 0 ${14 + getBottomSpace() / 2}px;
 
   flex-direction: row;
   justify-content: center;
@@ -53,8 +53,8 @@ export const BackButton = styled.TouchableOpacity`
 `;
 
 export const UserAvatar = styled.Image`
-  width: 180px;
-  height: 180px;
-  border-radius: 90px;
+  width: 170px;
+  height: 170px;
+  border-radius: 85px;
   align-self: center;
 `;
