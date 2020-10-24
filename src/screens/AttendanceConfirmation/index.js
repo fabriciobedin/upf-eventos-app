@@ -24,68 +24,6 @@ const AttendanceConfirmation = () => {
   const [participantData, setParticipantData] = useState({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log('EventoID', eventId);
-    console.log('ParticipanteID', participantId);
-    async function getParticipantData() {
-      await firestore()
-        .collection('Eventos')
-        .doc(eventId)
-        .collection('Participantes')
-        .doc(participantId)
-        .get()
-        .then(participant => {
-          console.log(participant.id);
-          const { nome, documento, idEstrangeiro } = participant.data();
-          if (participant.exists) {
-            setParticipantData({
-              nome,
-              documento: documento || idEstrangeiro
-            });
-          } else {
-            console.log('Error geting participant data');
-          }
-        });
-    }
-    getParticipantData();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    async function getEntryTimeFromFirebase() {
-      await firestore()
-        .collection('Eventos')
-        .doc(eventId)
-        .collection('Subeventos')
-        .doc(subEventId)
-        .collection('SubeventoParticipantes')
-        .doc(participantId)
-        .get({})
-        .then(participant => {
-          if (participant.exists && !!participant._data.horaEntrada) {
-            setAction('out');
-          } else {
-            setAction('in');
-          }
-        });
-      setLoading(false);
-    }
-    getEntryTimeFromFirebase();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        Alert.alert(
-          'Erro na conexão',
-          'Não foi possível buscar os dados do participante, mas fique tranquilo a presença será confirmada da mesma forma.'
-        );
-      }
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const navigateBack = useCallback(() => {
     goBack();
   }, [goBack]);
@@ -97,16 +35,87 @@ const AttendanceConfirmation = () => {
     });
   }, [navigate]);
 
-  const confirmation = useCallback(() => {
-    const participantRef = firestore()
+  const getParticipantConfirmation = useCallback(async () => {
+    await firestore()
       .collection('Eventos')
       .doc(eventId)
       .collection('Subeventos')
       .doc(subEventId)
       .collection('SubeventoParticipantes')
-      .doc(participantId);
+      .get()
+      .then(async querySnapshot => {
+        let participantConfirmationStatus = false;
+        await Promise.all(
+          querySnapshot.docs.map(participant => {
+            console.log(participantId, participant.id);
+            if (participantId == participant.id)
+              participantConfirmationStatus = true;
+          })
+        );
+        if (!!participantConfirmationStatus) {
+          await getParticipantData();
+          await getEntryTimeFromFirebase();
+          setLoading(false);
+        } else {
+          Alert.alert('Erro', 'O participante não está inscrito nesse evento');
+          navigateToCodeScanner();
+        }
+      })
+      .catch(err => {
+        console.log('Error getting documents: ', err);
+      });
+  });
 
-    participantRef
+  const getParticipantData = useCallback(async () => {
+    await firestore()
+      .collection('Eventos')
+      .doc(eventId)
+      .collection('Participantes')
+      .doc(participantId)
+      .get()
+      .then(participant => {
+        const { nome, documento, idEstrangeiro } = participant.data();
+        if (participant.exists) {
+          setParticipantData({
+            nome,
+            documento: documento || idEstrangeiro
+          });
+        } else {
+          console.log('Error geting participant data');
+        }
+      });
+  });
+
+  const getEntryTimeFromFirebase = useCallback(async () => {
+    await firestore()
+      .collection('Eventos')
+      .doc(eventId)
+      .collection('Subeventos')
+      .doc(subEventId)
+      .collection('SubeventoParticipantes')
+      .doc(participantId)
+      .get({})
+      .then(async participant => {
+        if (participant.exists && !!participant._data.horaEntrada) {
+          setAction('out');
+        } else {
+          setAction('in');
+        }
+      });
+  });
+
+  useEffect(() => {
+    getParticipantConfirmation();
+  }, []);
+
+  const confirmation = useCallback(() => {
+    firestore()
+      .collection('Eventos')
+      .doc(eventId)
+      .collection('Subeventos')
+      .doc(subEventId)
+      .collection('SubeventoParticipantes')
+      .doc(participantId)
       .update(
         action === 'in'
           ? { horaEntrada: new Date() }

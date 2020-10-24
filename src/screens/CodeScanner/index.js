@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -8,7 +8,6 @@ import {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import firestore from '@react-native-firebase/firestore';
 import * as Yup from 'yup';
 
 import {
@@ -52,10 +51,11 @@ const CodeScanner = () => {
     [navigate]
   );
 
-  const readQRCode = useCallback(code => {
+  const readQRCode = useCallback(async code => {
     const [qrcodeEventId, qrcodeParticipantId] = code.split('|');
 
-    if (!validateEvent(qrcodeEventId)) return;
+    if (await !validateEvent(qrcodeEventId)) return;
+
     navigateToAttendanceConfirmation(qrcodeParticipantId);
   }, []);
 
@@ -75,7 +75,7 @@ const CodeScanner = () => {
     }
     readQRCode(data.subscription);
     // readQRCode('0wXiTC6pzoC4zvKTh82W|6bNnKUEiquchCyPeANGv');
-    // readQRCode('0wXiTC6pzoC4zvKTh82W|fOiw9GwQGMhCF5aVswUr');
+    // readQRCode('YEUy7dZ5qBxDZrGrKtXd|NoNnM6bETrp9BjiCwZ8W');
   }, []);
 
   return (
