@@ -22,6 +22,7 @@ yarn ios                            # to run the app in iOS
 
 [Steps to configure](https://www.notion.so/137576/Steps-to-configure-Firebase-d8c4815abc024404964d77fd3b4ac677)
 
+</br>
 
 ### Features used in [Firebase](https://console.firebase.google.com/u/0/)
 * [Cloud Firestore](https://firebase.google.com/docs/firestore?authuser=5)
